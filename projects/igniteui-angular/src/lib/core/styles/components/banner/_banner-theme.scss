@@ -104,12 +104,12 @@
     }
 
     %igx-banner__border-top {
-        border-top: 1px solid --var($theme, 'banner-border-color');
+        border-top: 1px solid rgba(--var($theme, 'banner-border-color'), .26);
         top: -1px
     }
 
     %igx-banner__border-bottom {
-        border-bottom: 1px solid --var($theme, 'banner-border-color');
+        border-bottom: 1px solid rgba(--var($theme, 'banner-border-color'), --var($theme, 'banner-border-color'));
         top: 0;
     }
 

@@ -78,6 +78,7 @@
     );
 
     $variant: map-get($theme, variant);
+    $indigo-theme: $variant == 'indigo-design';
 
     $left: if-ltr(left, right);
     $right: if-ltr(right, left);
@@ -92,7 +93,7 @@
         pointer-events: none;
         top: 0;
         #{$left}: 0;
-        background: --var($theme, 'background');
+        background: rgba(--var($theme, 'background'), .4);
         color: inherit;
         padding: map-get($padding, 'comfortable');
         z-index: 9999;
@@ -177,7 +178,13 @@
         position: relative;
         color: --var($theme, 'icon-color');
         border-radius: --var($theme, 'actions-border-radius');
-        background: --var($theme, 'actions-background');
+
+        @if not $indigo-theme {
+            background: rgba(--var($theme, 'actions-background'), .8);
+        } @else {
+            background: --var($theme, 'actions-background');
+        }
+
         max-height: 36px;
 
         &:last-child {

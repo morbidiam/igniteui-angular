@@ -22,9 +22,7 @@ $_light-action-strip: extend(
         variant: 'material',
 
         actions-background: (
-            igx-color: ('grays', 200),
-            to-opaque: #fff,
-            rgba: .9
+            igx-color: ('grays', 200)
         ),
 
         background: (

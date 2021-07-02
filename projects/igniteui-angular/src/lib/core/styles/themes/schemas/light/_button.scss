@@ -17,6 +17,7 @@
 $_material-base-button: (
     variant: 'material',
 
+
     shadow-color: transparent,
 
     border-color: transparent,
@@ -94,6 +95,7 @@ $_material-outlined-button: extend(
             igx-color: ('grays', 300)
         ),
 
+        // TODO this is not used anywhere in the theme
         focus-border-color: (
             igx-color: ('grays', 300)
         ),

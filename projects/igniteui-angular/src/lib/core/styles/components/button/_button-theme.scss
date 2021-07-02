@@ -443,12 +443,12 @@
 
         @if $variant != 'indigo-design' {
             border: $button-border;
-            border-color: --var($outlined-theme, 'border-color');
+            border-color: rgba(--var($outlined-theme, 'border-color'), 15);
         } @else {
             border: {
                 width: 2px;
                 style: solid;
-                color: --var($outlined-theme, 'border-color');
+                color: rgba(--var($outlined-theme, 'border-color'), 12);
             }
         }
 
@@ -620,11 +620,11 @@
 
         &%igx-button--raised,
         &%igx-button--fab {
-            background: --var($flat-theme, 'disabled-background');
+            background: rgba(--var($flat-theme, 'disabled-background'), .4);
         }
 
         &%igx-button--outlined {
-            border-color: --var($flat-theme, 'disabled-border-color');
+            border-color: rgba(--var($flat-theme, 'disabled-border-color'), .26);
         }
 
         &:focus {

@@ -71,21 +71,6 @@
     @return max($backLum, $foreLum) / min($backLum, $foreLum);
 }
 
-/// Returns an alpha channel map for a given palette variant.
-/// @param {string} $variant ['material'] - The palette variant.
-/// @returns {Map} - The alpha channel map for the specified palette.
-@function _alpha-map($variant: 'material') {
-    $material: (50: .02, 100: .04, 200: .08, 300: .12, 400: .26, 500: .38, 600: .54, 700: .62, 800: .74, 900: .87);
-    $indigo: (50: .02, 100: .03, 200: .06, 300: .15, 400: .21, 500: .4, 600: .52, 700: .64, 800: .77, 900: .9);
-
-    @return map-get((
-        'material': $material,
-        'fluent': $material,
-        'bootstrap': $material,
-        'indigo-design': $indigo,
-    ), $variant);
-}
-
 /// Generates a color shade from base color and saturation level.
 /// @access private
 /// @group Palettes
@@ -123,76 +108,82 @@
     }
 }
 
+
+
 /// Generates an hsla color variant from base(500) colors.
 /// @access private
 /// @group Palettes
 /// @param {Color} $name - The base color name (primary, secondary, etc.) to be used to generate a color variant.
 /// @param {number|string} $variant - The target shade variant.
 /// @param {number|string} $theme - The target theme variant.
-@function _gen-hsla-color($name, $variant, $theme) {
+@function _gen-hsla-color($name, $variant, $theme, $color) {
     $h: var(--igx-#{$name}-h);
     $s: var(--igx-#{$name}-s);
     $l: var(--igx-#{$name}-l);
     $a: var(--igx-#{$name}-a);
-    $am: _alpha-map($theme);
+
+    $re: var(--igx-#{$name}-r);
+    $gr: var(--igx-#{$name}-g);
+    $bl: var(--igx-#{$name}-b);
+    $al: var(--igx-#{$name}-a);
 
     @if ($variant == 50) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 50)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, calc(#{$s} * 1.23), calc(#{$l} * 1.78), #{$a})};
         }
     } @else if ($variant == 100) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 100)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, calc(#{$s} / 1.25), calc(#{$l} * 1.66), #{$a})};
         }
     } @else if ($variant == 200) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 200)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, calc(#{$s} * .64), calc(#{$l} * 1.43), #{$a})};
         }
     } @else if ($variant == 300) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 300)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, calc(#{$s} * .73), calc(#{$l} * 1.19), #{$a})};
         }
     } @else if ($variant == 400) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 400)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, calc(#{$s} * .875), calc(#{$l} * 1.08), #{$a})};
         }
     } @else if ($variant == 500) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 500)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, $s, $l, $a)};
         }
     } @else if ($variant == 600) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 600)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, calc(#{$s} * 1.26), calc(#{$l} * .89), #{$a})};
         }
     } @else if ($variant == 700) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 700)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, calc(#{$s} * 1.52), calc(#{$l} * .81), #{$a})};
         }
     } @else if ($variant == 800) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 800)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, calc(#{$s} * 1.5), calc(#{$l} * .73), #{$a})};
         }
     } @else if ($variant == 900) {
         @if $name == 'grays' {
-            @return #{hsla($h, $s, $l, calc(#{map-get($am, 900)} * #{$a}))};
+            @return #{red($color), green($color), blue($color)};
         } @else {
             @return #{hsla($h, calc(#{$s} * 1.34), calc(#{$l} * .64), #{$a})};
         }
@@ -235,6 +226,47 @@
     @return $result;
 }
 
+/// Generates a color shade from base color and saturation level.
+/// @access private
+/// @group Palettes
+/// @param {Color} $color - The base color to be used to generate a color shade.
+/// @param {number|string} $shade - The shade.
+@function _get-grays($name, $color, $shade) {
+    $lumen: luminance($color);
+
+    @if ($shade == 50) {
+        $lightness: if($lumen < .5, 98%, 13%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    } @else if ($shade == 100) {
+        $lightness: if($lumen < .5, 96%, 26%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    } @else if ($shade == 200) {
+        $lightness: if($lumen < .5, 93%, 38%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    } @else if ($shade == 300) {
+        $lightness: if($lumen < .5, 88%, 54%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    } @else if ($shade == 400) {
+        $lightness: if($lumen < .5, 74%, 62%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    } @else if ($shade == 500) {
+        $lightness: if($lumen < .5, 62%, 74%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    } @else if ($shade == 600) {
+        $lightness: if($lumen < .5, 54%, 88%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    } @else if ($shade == 700) {
+        $lightness: if($lumen < .5, 38%, 93%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    } @else if ($shade == 800) {
+        $lightness: if($lumen < .5, 26%, 96%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    } @else if ($shade == 900) {
+        $lightness: if($lumen < .5, 13%, 98%);
+        @return change-color($color, $saturation: 0%, $lightness: $lightness);
+    }
+}
+
 /// Generates grayscale color palette from a color.
 /// @access private
 /// @group Palettes
@@ -245,16 +277,24 @@
 /// Based on the Material color system.
 /// @returns {Map} - A map consisting of 10 color variations and 10
 /// text contrast colors for each variation.
-@function grayscale-palette($color, $shades, $base: #fff) {
+@function grayscale-palette(
+    $name,
+    $color,
+    $shades,
+    $base: #fff
+) {
     $result: ();
-    @each $saturation, $opacity in $shades {
-        $shade: rgba($color, $opacity);
-        $contrast: text-contrast(to-opaque($shade, $base, null));
+    @each $shade in $shades {
+        $get-color: _get-grays($name, $color, $shade);
+        $contrast: text-contrast(to-opaque($get-color, $base, null));
+
         $result: map-merge($result, (
-            $saturation: $shade,
-            #{$saturation}-contrast: $contrast
+            $shade: $get-color,
+            #{$shade}-contrast: $contrast
         ));
     }
+
+
     @return $result;
 }
 
@@ -285,14 +325,18 @@
     $variant: 'material'
 ) {
     $saturations: (50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 'A100', 'A200', 'A400', 'A700');
-    $shades: _alpha-map($variant);
+    $grays-shades: (50, 100, 200, 300, 400, 500, 600, 700, 800, 900);
+    //$material: (50: .02, 100: .04, 200: .08, 300: .12, 400: .26, 500: .38, 600: .54, 700: .62, 800: .74, 900: .87);
+    //$indigo: (50: .02, 100: .03, 200: .06, 300: .15, 400: .21, 500: .4, 600: .52, 700: .64, 800: .77, 900: .9);
+
 
     $primary-palette: generate-palette($primary, $saturations, $surface);
     $secondary-palette: generate-palette($secondary, $saturations, $surface);
-    $grayscale-palette: grayscale-palette($grays, $shades, $surface);
+    $grayscale-palette: grayscale-palette('grays', $grays, $grays-shades, $surface);
 
     // @debug 'Primary Colors Palette: #{$primary-palette}';
     // @debug 'secondary Colors Palette: #{$secondary-palette}';
+    // @debug 'secondary Colors Palette: #{$grayscale-palette}';
     // @debug 'Warn Colors Palette: #{$warn-palette}';
 
     @return (
@@ -330,7 +374,8 @@
             )
         ),
         _meta: (
-            variant: $variant
+            variant: $variant,
+            grays: $grays
         )
     );
 }
