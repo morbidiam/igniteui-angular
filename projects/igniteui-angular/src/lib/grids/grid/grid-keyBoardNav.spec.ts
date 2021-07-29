@@ -289,8 +289,8 @@ describe('IgxGrid - Keyboard navigation #grid', () => {
             await wait();
             fix.detectChanges();
 
-            expect(fix.componentInstance.selectedCell.row.index).toEqual(100);
-            // Navigate to the 94th row
+            expect(fix.componentInstance.selectedCell.rowIndex).toEqual(100);
+
             UIInteractions.triggerEventHandlerKeyDown('arrowup', gridContent);
             await wait(DEBOUNCETIME);
             fix.detectChanges();
