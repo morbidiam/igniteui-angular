@@ -3,6 +3,7 @@ import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { UpdateChanges } from '../common/UpdateChanges';
 import { FileChange, findElementNodes, getAttribute, getSourceOffset, hasAttribute, parseFile,
         serializeNodes, makeNgIf, stringifyAttriutes } from '../common/util';
+import { findMatches, replaceMatch } from '../common/tsUtils';
 
 const version = '12.1.0';
 
@@ -18,6 +19,12 @@ export default (): Rule => (host: Tree, context: SchematicContext) => {
   const providerWarnMsg = `/* Injection token 'IgxGridTransaction' has been deprecated. ` +
   `Please refer to the update guide for more details. */`;
   const templateNames = [];
+
+  const rowTypeTarget = 'RowType';
+  const cellTypeChanges = [
+      { member: 'rowData', replaceWith: 'data', definedIn: [rowTypeTarget] }
+  ];
+  const tsFiles = update.tsFiles;
 
   const applyChanges = () => {
     for (const [path, change] of changes.entries()) {
@@ -124,6 +131,24 @@ export default (): Rule => (host: Tree, context: SchematicContext) => {
     }
     content = content.replace(matchExpr, `${providerWarnMsg}\n$1`);
     host.overwrite(path, content);
+  }
+
+  for (const entryPath of tsFiles) {
+      const ls = update.getDefaultLanguageService(entryPath);
+      let content = host.read(entryPath).toString();
+      for (const change of cellTypeChanges) {
+          const matches = findMatches(content, change.member);
+          for (const position of matches) {
+              const definition = ls.getDefinitionAndBoundSpan(entryPath, position - 1)?.definitions[0];
+              if (definition
+                  && definition.kind === 'interface'
+                  && definition.name === rowTypeTarget
+                  && definition.fileName.includes('igniteui-angular')) {
+                  content = replaceMatch(content, change.member, change.replaceWith, position);
+                  host.overwrite(entryPath, content);
+              }
+          }
+      }
   }
 
   update.applyChanges();

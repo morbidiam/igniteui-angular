@@ -22,13 +22,12 @@
             "name": "Run migration",
             "request": "launch",
             "type": "node",
-            "cwd": "<directory to apply migrations in>",
+            "cwd": "D:/Dev/paging-app",
             "args": [
                 "-r",
-                "ts-node/register",
-                // e.g. "${env:AppData}/npm/node_modules/@angular/cli/bin/ng"
-                "<path/to/ng>", "g",
-                "<../path/to>/igniteui-angular/projects/igniteui-angular/migrations/migration-collection.json:migration-<number>"
+                "../igniteui-angular/node_modules/ts-node/register",
+                "${env:AppData}/npm/node_modules/@angular/cli/bin/ng", "g",
+                "../igniteui-angular/projects/igniteui-angular/migrations/migration-collection.json:migration-21"
             ],
             "env": {
                 "TS_NODE_PROJECT": "${workspaceFolder}/projects/igniteui-angular/migrations/tsconfig.json"
