@@ -25,7 +25,7 @@
             "cwd": "D:/Dev/paging-app",
             "args": [
                 "-r",
-                "../igniteui-angular/node_modules/ts-node/register",
+                "ts-node/register",
                 "${env:AppData}/npm/node_modules/@angular/cli/bin/ng", "g",
                 "../igniteui-angular/projects/igniteui-angular/migrations/migration-collection.json:migration-21"
             ],

@@ -308,6 +308,27 @@
             "definedIn": [
                 "IgxMaskDirective"
             ]
+        },
+        {
+            "member": "rowIndex",
+            "replaceWith": "row.index",
+            "definedIn": [
+                "IgxGridCellComponent"
+            ]
+        },
+        {
+            "member": "columnIndex",
+            "replaceWith": "column.index",
+            "definedIn": [
+                "IgxGridCellComponent"
+            ]
+        },
+        {
+            "member": "visibleColumnIndex",
+            "replaceWith": "column.visibleIndex",
+            "definedIn": [
+                "IgxGridCellComponent"
+            ]
         }
     ]
 }

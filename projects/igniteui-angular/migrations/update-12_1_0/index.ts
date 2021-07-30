@@ -133,23 +133,23 @@ export default (): Rule => (host: Tree, context: SchematicContext) => {
     host.overwrite(path, content);
   }
 
-  for (const entryPath of tsFiles) {
-      const ls = update.getDefaultLanguageService(entryPath);
-      let content = host.read(entryPath).toString();
-      for (const change of cellTypeChanges) {
-          const matches = findMatches(content, change.member);
-          for (const position of matches) {
-              const definition = ls.getDefinitionAndBoundSpan(entryPath, position - 1)?.definitions[0];
-              if (definition
-                  && definition.kind === 'interface'
-                  && definition.name === rowTypeTarget
-                  && definition.fileName.includes('igniteui-angular')) {
-                  content = replaceMatch(content, change.member, change.replaceWith, position);
-                  host.overwrite(entryPath, content);
-              }
-          }
-      }
-  }
+  // for (const entryPath of tsFiles) {
+  //     const ls = update.getDefaultLanguageService(entryPath);
+  //     let content = host.read(entryPath).toString();
+  //     for (const change of cellTypeChanges) {
+  //         const matches = findMatches(content, change.member);
+  //         for (const position of matches) {
+  //             const definition = ls.getDefinitionAndBoundSpan(entryPath, position - 1)?.definitions[0];
+  //             if (definition
+  //                 && definition.kind === 'interface'
+  //                 && definition.name === rowTypeTarget
+  //                 && definition.fileName.includes('igniteui-angular')) {
+  //                 content = replaceMatch(content, change.member, change.replaceWith, position);
+  //                 host.overwrite(entryPath, content);
+  //             }
+  //         }
+  //     }
+  // }
 
   update.applyChanges();
 };
