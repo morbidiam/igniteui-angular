@@ -529,7 +529,12 @@ export class AppComponent implements OnInit {
             link: '/grid-nested-props',
             icon: 'view_column',
             name: 'Grid nested properties data source'
-        }
+        },
+        {
+            link: '/gridCRUD',
+            icon: 'view_column',
+            name: 'Grid CRUD'
+        },
     ].sort((componentLink1, componentLink2) => componentLink1.name > componentLink2.name ? 1 : -1);
 
     public directiveLinks = [

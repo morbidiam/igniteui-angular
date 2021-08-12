@@ -1,0 +1,33 @@
+.grid__wrapper {
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.country {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    > span {
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.col-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.col-avatar.igx-avatar--small {
+    width: rem(15px) !important;
+    height: rem(15px) !important;
+    min-width: rem(30px) !important;
+    margin-right: rem(8px) !important;
+}

@@ -125,6 +125,7 @@ import { GridLocalizationSampleComponent } from './grid-localization/grid-locali
 import { TreeGridGroupBySampleComponent } from './tree-grid-groupby/tree-grid-groupby.sample';
 import { PaginationSampleComponent } from './pagination/pagination.component';
 import { GridCellAPISampleComponent } from './grid-cell-api/grid-cell-api.sample';
+import { CRUDSampleComponent } from './grid-crud-sample/crud-sample.component';
 
 const appRoutes = [
     {
@@ -598,7 +599,11 @@ const appRoutes = [
     },{
         path: 'pagination',
         component: PaginationSampleComponent
-    }
+    },
+    {
+        path: 'gridCRUD',
+        component: CRUDSampleComponent
+    },
 ];
 
 export const routing = RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' });
