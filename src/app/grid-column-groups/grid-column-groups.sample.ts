@@ -15,6 +15,7 @@ export class GridColumnGroupsSampleComponent implements AfterViewInit {
     public s = true;
     public selectionMode;
     public pinningConfig = { columns: ColumnPinningPosition.Start};
+    public gridColumns = [];
     public data: any[] = [
         /* eslint-disable max-len */
         { ID: 'ALFKI', CompanyName: 'Alfreds Futterkiste', ContactName: 'Maria Anders', ContactTitle: 'Sales Representative', Address: 'Obere Str. 57', City: 'Berlin', Region: null, PostalCode: '12209', Country: 'Germany', Phone: '030-0074321', Fax: '030-0076545' },

@@ -5,12 +5,12 @@
     </div>
 
     <igx-tree-grid #grid1
-        [data]="data | treeGridGrouping:groupingExpressions:groupKey:childDataKey:grid1:employeeAggregations"
+        [data]="data | pivot:groupingExpressions:groupKey:childDataKey:grid1:employeeAggregations:pivotCols"
         selectionType='multi'
         [childDataKey]="childDataKey"
         [rowSelection]="selectionMode"
         [displayDensity]="density"
-        [width]="'1200px'"
+        [width]="'1220px'"
         [height]="'700px'"
         [sortStrategy]="sorting"
         [allowFiltering]="true"
@@ -32,10 +32,17 @@
 
         <igx-column [field]='groupKey' [resizable]='true' [width]="'250px'" [hidden]='groupingExpressions.length === 0'></igx-column>
 
-        <igx-column *ngFor="let c of columns" [field]="c.field" [header]="c.field" [pinned]="c.pinned"
+        <!-- <igx-column *ngFor="let c of columns" [field]="c.field" [header]="c.field" [pinned]="c.pinned"
             [movable]="c.movable" [groupable]="true" [resizable]="c.resizable" [width]="c.width"
             [sortable]="true" [filterable]="true" [editable]="true" [hidden]="c.hidden" [hasSummary]="c.summary"
             [minWidth]="c.minWidth" [maxWidth]="c.maxWidth" [dataType]="c.dataType">
-        </igx-column>
+        </igx-column> -->
+        <igx-column-group *ngFor="let colGroup of columnGroups" [movable]="colGroup.movable" [header]="colGroup.header" [collapsible]='colGroup.collapsible' [expanded]='colGroup.expanded'>
+            <igx-column *ngFor="let c of colGroup.columns" [field]="c.field" [header]="c.field" [pinned]="c.pinned"
+                [movable]="c.movable" [groupable]="true" [resizable]="c.resizable" [width]="c.width"
+                [sortable]="true" [filterable]="true" [editable]="true" [hidden]="c.hidden" [hasSummary]="c.summary"
+                [minWidth]="c.minWidth" [maxWidth]="c.maxWidth" [dataType]="c.dataType" [header]="c.header">
+            </igx-column>
+        </igx-column-group>
     </igx-tree-grid>
 </div>
