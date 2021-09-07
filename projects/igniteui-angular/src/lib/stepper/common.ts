@@ -1,24 +1,39 @@
 import { InjectionToken } from '@angular/core';
-import { CancelableEventArgs, IBaseEventArgs } from '../core/utils';
+import { CancelableEventArgs, IBaseCancelableBrowserEventArgs, IBaseEventArgs, mkenum } from '../core/utils';
 import { IgxStepperComponent } from './igx-stepper.component';
+import { IgxStepComponent } from './step/igx-step.component';
 
 // Events
-export interface IStepperEventArgs extends IBaseEventArgs {
-    index: number;
+// export interface IStepperEventArgs extends IBaseEventArgs {
+//     index: number;
+//     owner: IgxStepperComponent;
+// }
+
+// export interface IStepperCancelableEventArgs extends CancelableEventArgs {
+//     oldIndex: number;
+//     newIndex: number;
+//     owner: IgxStepperComponent;
+// }
+
+export interface IStepTogglingEventArgs extends IBaseEventArgs, IBaseCancelableBrowserEventArgs {
+    step: IgxStepComponent;
     owner: IgxStepperComponent;
 }
 
-export interface IStepperCancelableEventArgs extends CancelableEventArgs {
-    oldIndex: number;
-    newIndex: number;
+export interface IStepToggledEventArgs extends IBaseEventArgs {
+    step: IgxStepComponent;
     owner: IgxStepperComponent;
+    oldStep?: IgxStepComponent;
+    oldIndex?: number;
 }
+
 
 // Enums
-export enum IgxStepperOrienatation {
-    Horizontal,
-    Vertical
-}
+export const IgxStepperOrienatation = mkenum({
+    Horizontal: 'Horizontal',
+    Vertical: 'Vertical'
+});
+export type IgxStepperOrienatation = (typeof IgxStepperOrienatation)[keyof typeof IgxStepperOrienatation];
 
 export enum IgxStepType {
     Indicator,

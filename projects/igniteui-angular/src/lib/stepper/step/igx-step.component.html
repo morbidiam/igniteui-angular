@@ -1,13 +1,19 @@
-<ng-template #label>
+<ng-template #defaultLabel>
     <div>
-        <ng-content *ngIf="isLabelVisible" select='[igxStepLabel]'></ng-content>
+        <ng-content select='[igxStepLabel]'></ng-content>
     </div>
 </ng-template>
+
+<ng-template #defaultContent>
+</ng-template>
+
 <div>
-    <ng-content *ngIf="isIndicatorVisible" select='[igxStepIcon]'></ng-content>
-    <ng-container *ngTemplateOutlet="isHorizontal ? label : null"></ng-container>
+    <ng-content select='[igxStepIcon]'></ng-content>
+    <!-- <ng-container *ngTemplateOutlet="isHorizontal ? defaultLabel : null"></ng-container> -->
 </div>
 <div>
-    <ng-container *ngTemplateOutlet="!isHorizontal ? label : null"></ng-container>
-    <ng-content *ngIf="active"></ng-content>
+    <!-- <ng-container *ngTemplateOutlet="!isHorizontal ? defaultLabel : null"></ng-container> -->
+    <div *ngIf="active && stepper.orientation === 'Horizontal'" #asd>
+        <ng-container *ngTemplateOutlet="content ? contentTempl : defaultContent"></ng-container>
+    </div>
 </div>

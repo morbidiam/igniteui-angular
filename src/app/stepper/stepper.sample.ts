@@ -29,7 +29,7 @@ export class IgxStepperSampleComponent implements AfterViewInit {
     ];
     public ngAfterViewInit(){
         requestAnimationFrame(() => {
-            this.stepper.steps[1].completedStyle = IgxStepperProgressLine.Dashed;
+            // this.stepper.steps[1].completedStyle = IgxStepperProgressLine.Dashed;
         });
     }
     public toggleStepTypes(event){

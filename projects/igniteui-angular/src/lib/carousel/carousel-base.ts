@@ -2,6 +2,7 @@ import { AnimationBuilder, AnimationPlayer, AnimationReferenceMetadata, useAnima
 import { fadeIn } from '../animations/fade';
 import { slideInLeft } from '../animations/slide';
 import { mkenum } from '../core/utils';
+import { IgxStepComponent } from '../stepper/step/igx-step.component';
 
 export enum Direction { NONE, NEXT, PREV }
 
