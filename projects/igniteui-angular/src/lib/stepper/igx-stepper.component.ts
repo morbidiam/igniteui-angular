@@ -24,6 +24,8 @@ import {
     IgxStepIconDirective, IgxStepLabelDirective, IgxStepContentDirective
 } from './igx-stepper.directive';
 import { IgxStepComponent } from './step/igx-step.component';
+import { IgxStepperNavigationService } from './stepper-navigation.service';
+import { IgxStepperService } from './stepper.service';
 
 let NEXT_ID = 0;
 
@@ -31,6 +33,8 @@ let NEXT_ID = 0;
     selector: 'igx-stepper',
     templateUrl: 'igx-stepper.component.html',
     providers: [
+        IgxStepperService,
+        IgxStepperNavigationService,
         { provide: IGX_STEPPER_COMPONENT, useExisting: IgxStepperComponent },
     ]
 })
