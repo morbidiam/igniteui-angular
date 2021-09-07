@@ -112,7 +112,7 @@
         display: flex;
         flex-direction: column;
         border-radius: --var($theme, 'border-radius');
-        overflow: hidden;
+        overflow: visible;
     }
 
     %igx-expansion-panel__header-title {
@@ -141,7 +141,7 @@
 
     %igx-expanded-panel-margin {
         igx-expansion-panel[aria-expanded='true'] {
-            margin: --var($theme, 'expanded-margin') 0;
+            // margin: --var($theme, 'expanded-margin') 0;
 
             &:first-of-type {
                 margin-top: 0;
@@ -154,7 +154,9 @@
     }
 
     %igx-expansion-panel__header-inner {
-        display: flex;
+        // display: table-cell;
+        display: inline-flex;
+        // display: flex;
         align-items: center;
         padding: $panel-padding;
         cursor: pointer;

@@ -11,21 +11,23 @@ export class IgxStepperNavigationService implements OnDestroy {
     private stepper: IgxStepperComponent;
 
     private _focusedStep: IgxStepComponent = null;
-    private _lastFocusedNode: IgxStepComponent = null;
-    private _activeNode: IgxStepComponent = null;
+    private _lastFocusedStep: IgxStepComponent = null;
+    private _activeStep: IgxStepComponent = null;
+    private _lastActiveStep: IgxStepComponent = null;
 
     private _visibleChildren: IgxStepComponent[] = [];
-    private _invisibleChildren: Set<IgxStepComponent> = new Set();
-    private _disabledChildren: Set<IgxStepComponent> = new Set();
+    // private _invisibleChildren: Set<IgxStepComponent> = new Set();
+    // private _disabledChildren: Set<IgxStepComponent> = new Set();
 
     private _cacheChange = new Subject<void>();
 
-    constructor(private stepperService: IgxStepperService) {
+    constructor() {
         this._cacheChange.subscribe(() => {
-            this._visibleChildren =
-                this.stepper?.steps ?
-                    this.stepper.steps.filter(e => !(this._invisibleChildren.has(e) || this._disabledChildren.has(e))) :
-                    [];
+            // this._visibleChildren =
+            //     this.stepper?.steps ?
+            //         this.stepper.steps.filter(e => !(this._invisibleChildren.has(e) || this._disabledChildren.has(e))) :
+            //         [];
+            this._visibleChildren = this.stepper?.steps;
         });
     }
 
@@ -41,9 +43,9 @@ export class IgxStepperNavigationService implements OnDestroy {
         if (this._focusedStep === value) {
             return;
         }
-        this._lastFocusedNode = this._focusedStep;
-        if (this._lastFocusedNode) {
-            // this._lastFocusedNode.tabIndex = -1;
+        this._lastFocusedStep = this._focusedStep;
+        if (this._lastFocusedStep) {
+            // this._lastFocusedStep.tabIndex = -1;
         }
         this._focusedStep = value;
         if (this._focusedStep !== null) {
@@ -53,15 +55,20 @@ export class IgxStepperNavigationService implements OnDestroy {
     }
 
     public get activeStep() {
-        return this._activeNode;
+        return this._activeStep;
     }
 
     public set activeStep(value: IgxStepComponent) {
-        if (this._activeNode === value) {
+        if (this._activeStep === value) {
             return;
         }
-        this._activeNode = value;
-        this.stepper.activeStepChanged.emit(this._activeNode);
+        this._lastActiveStep = this._activeStep;
+        this._activeStep = value;
+        this.stepper.activeStepChanged.emit(this._activeStep);
+    }
+
+    public get lastActiveStep() {
+        return this._lastActiveStep;
     }
 
     public get visibleChildren(): IgxStepComponent[] {
@@ -84,20 +91,20 @@ export class IgxStepperNavigationService implements OnDestroy {
     //     this._cacheChange.next();
     // }
 
-    // public update_visible_cache(step: IgxStepComponent, expanded: boolean, shouldEmit = true): void {
-    //     if (expanded) {
-    //         step._children.forEach(child => {
-    //             this._invisibleChildren.delete(child);
-    //             this.update_visible_cache(child, child.expanded, false);
-    //         });
-    //     } else {
-    //         step.allChildren.forEach(c => this._invisibleChildren.add(c));
-    //     }
+    public update_visible_cache(step: IgxStepComponent, expanded: boolean, shouldEmit = true): void {
+        // if (expanded) {
+        //     step._children.forEach(child => {
+        //         this._invisibleChildren.delete(child);
+        //         this.update_visible_cache(child, child.expanded, false);
+        //     });
+        // } else {
+        //     step.allChildren.forEach(c => this._invisibleChildren.add(c));
+        // }
 
-    //     if (shouldEmit) {
-    //         this._cacheChange.next();
-    //     }
-    // }
+        if (shouldEmit) {
+            this._cacheChange.next();
+        }
+    }
 
     /**
      * Sets the step as focused (and active)

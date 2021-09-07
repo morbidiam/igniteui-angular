@@ -13,7 +13,7 @@
 </div>
 <div>
     <!-- <ng-container *ngTemplateOutlet="!isHorizontal ? defaultLabel : null"></ng-container> -->
-    <div *ngIf="active && stepper.orientation === 'Horizontal'" #asd>
-        <ng-container *ngTemplateOutlet="content ? contentTempl : defaultContent"></ng-container>
+    <div *ngIf="active && stepper.orientation === 'Vertical'" #asd>
+        <ng-container *ngTemplateOutlet="contentDirective ? contentTemplate : defaultContent"></ng-container>
     </div>
 </div>

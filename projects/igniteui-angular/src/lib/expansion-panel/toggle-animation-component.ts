@@ -2,6 +2,7 @@ import { AnimationBuilder, AnimationPlayer, AnimationReferenceMetadata, useAnima
 import { Directive, ElementRef, EventEmitter, OnDestroy } from '@angular/core';
 import { noop, Subject } from 'rxjs';
 import { growVerIn, growVerOut } from '../animations/grow';
+import { slideInLeft, slideInRight } from '../animations/slide';
 
 /**@hidden @internal */
 export interface ToggleAnimationSettings {
@@ -60,8 +61,28 @@ export abstract class ToggleAnimationPlayer implements ToggleAnimationOwner, OnD
     protected destroy$: Subject<void> = new Subject();
     protected players: Map<string, AnimationPlayer> = new Map();
     protected _animationSettings: ToggleAnimationSettings = {
-        openAnimation: growVerIn,
-        closeAnimation: growVerOut
+        openAnimation: useAnimation(slideInLeft,
+            {
+                params: {
+                    delay: '0s',
+                    duration: `300ms`,
+                    endOpacity: 1,
+                    startOpacity: 1,
+                    fromPosition: `translateX(100%)`,
+                    toPosition: 'translateX(0%)'
+                }
+            }),
+        closeAnimation: useAnimation(slideInRight,
+            {
+                params: {
+                    delay: '0s',
+                    duration: `300ms`,
+                    endOpacity: 1,
+                    startOpacity: 1,
+                    fromPosition: `translateX(0%)`,
+                    toPosition: 'translateX(100%)'
+                }
+            }),
     };
 
     private closeInterrupted = false;

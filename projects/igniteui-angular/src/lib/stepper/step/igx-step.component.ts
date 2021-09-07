@@ -1,6 +1,7 @@
 import { AnimationBuilder } from '@angular/animations';
 import {
-    ChangeDetectorRef, Component, ContentChild, ElementRef, HostBinding, Inject, Input, OnInit, Output, ViewChild, EventEmitter, OnDestroy
+    ChangeDetectorRef, Component, ContentChild, ElementRef, HostBinding, Inject, Input,
+    OnInit, Output, ViewChild, EventEmitter, OnDestroy, HostListener
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ToggleAnimationPlayer, ToggleAnimationSettings } from '../../expansion-panel/toggle-animation-component';
@@ -127,14 +128,15 @@ export class IgxStepComponent extends ToggleAnimationPlayer implements OnInit, O
      * @internal
      */
     @ContentChild(IgxStepContentDirective)
-    public content: IgxStepContentDirective;
+    public contentDirective: IgxStepContentDirective;
+
+    public get contentTemplate() {
+        return this.contentDirective.templateRef;
+    }
 
     @ViewChild('asd', { read: ElementRef })
     public contentContainer: ElementRef;
 
-    public get contentTempl() {
-        return this.content.templateRef;
-    }
 
     public positionPercent: number;
 
@@ -171,7 +173,7 @@ export class IgxStepComponent extends ToggleAnimationPlayer implements OnInit, O
      */
     @Input()
     public get expanded() {
-        return this.stepperService.isExpanded(this);
+        return this.navService.activeStep === this;
     }
 
     public set expanded(val: boolean) {
@@ -193,6 +195,20 @@ export class IgxStepComponent extends ToggleAnimationPlayer implements OnInit, O
      */
     public get nativeElement() {
         return this.element.nativeElement;
+    }
+
+    /**
+     * @hidden @internal
+     * Clear the node's focused state
+     */
+    @HostListener('click', ['$event'])
+    public onClick(ev) {
+        ev.preventDefault();
+        if(this.expanded) {
+            return;
+        }
+        this.expand();
+        this.navService.setFocusedAndActiveStep(this);
     }
 
 
@@ -241,29 +257,6 @@ export class IgxStepComponent extends ToggleAnimationPlayer implements OnInit, O
     //  public clearFocus(): void {
     //     this.isFocused = false;
     // }
-
-    /**
-     * Toggles the node expansion state, triggering animation
-     *
-     * ```html
-     * <igx-tree>
-     *      <igx-tree-node #node>My Node</igx-tree-node>
-     * </igx-tree>
-     * <button igxButton (click)="node.toggle()">Toggle Node</button>
-     * ```
-     *
-     * ```typescript
-     * const myNode: IgxTreeNode<any> = this.tree.findNodes(data[0])[0];
-     * myNode.toggle();
-     * ```
-     */
-    public toggle() {
-        if (this.expanded) {
-            this.collapse();
-        } else {
-            this.expand();
-        }
-    }
 
     public ngOnDestroy() {
         super.ngOnDestroy();
@@ -321,11 +314,12 @@ export class IgxStepComponent extends ToggleAnimationPlayer implements OnInit, O
             owner: this.stepper,
             cancel: false
         };
+
         this.stepper.stepCollapsing.emit(args);
         if (!args.cancel) {
             this.stepperService.collapsing(this);
             this.playCloseAnimation(
-                this.contentContainer
+                this.navService.lastActiveStep.contentContainer
             );
         }
     }

@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { IgxStepperComponent } from './igx-stepper.component';
 import { IgxStepComponent } from './step/igx-step.component';
+import { IgxStepperNavigationService } from './stepper-navigation.service';
 
 /** @hidden @internal */
 @Injectable()
 export class IgxStepperService {
-    public expandedSteps: Set<IgxStepComponent> = new Set<IgxStepComponent>();
+    // public expandedSteps: Set<IgxStepComponent> = new Set<IgxStepComponent>();
     public collapsingSteps: Set<IgxStepComponent> = new Set<IgxStepComponent>();
     private stepper: IgxStepperComponent;
+
+    constructor(public navService: IgxStepperNavigationService) {}
 
     /**
      * Adds the step to the `expandedSteps` set and fires the nodes change event
@@ -18,21 +21,22 @@ export class IgxStepperService {
      */
     public expand(step: IgxStepComponent, uiTrigger?: boolean): void {
         this.collapsingSteps.delete(step);
-        if (!this.expandedSteps.has(step)) {
+        if (this.navService.activeStep !== step) {
             step.expandedChange.emit(true);
+            this.navService.activeStep = step;
+            const lastActiveStep = this.navService.lastActiveStep;
+            if(!lastActiveStep) {
+                return;
+            }
+            if (uiTrigger) {
+                this.navService.lastActiveStep?.collapse();
+            } else {
+                this.navService.lastActiveStep.expanded = false;
+            }
+
         } else {
             return;
         }
-        this.expandedSteps.add(step);
-        // if (this.stepper.singleBranchExpand) {
-        //     this.stepper.findNodes(step, this.siblingComparer)?.forEach(e => {
-        //         if (uiTrigger) {
-        //             e.collapse();
-        //         } else {
-        //             e.expanded = false;
-        //         }
-        //     });
-        // }
     }
 
     /**
@@ -51,15 +55,10 @@ export class IgxStepperService {
      * @returns void
      */
     public collapse(step: IgxStepComponent): void {
-        if (this.expandedSteps.has(step)) {
+        if (this.navService.activeStep === step) {
             step.expandedChange.emit(false);
         }
         this.collapsingSteps.delete(step);
-        this.expandedSteps.delete(step);
-    }
-
-    public isExpanded(step: IgxStepComponent): boolean {
-        return this.expandedSteps.has(step);
     }
 
     public register(stepper: IgxStepperComponent) {

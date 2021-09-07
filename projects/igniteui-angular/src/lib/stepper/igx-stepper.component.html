@@ -4,9 +4,10 @@
 
 <div *ngIf="orientation === 'Horizontal'">
     <ng-container *ngFor="let step of steps; let i = index">
-        <div *ngIf="step.active">
-            <ng-container *ngTemplateOutlet="step.contentTempl"></ng-container>
+        <div [style.display]="step.active ? 'block' : 'none'">
+            <ng-container *ngTemplateOutlet="step.contentTemplate"></ng-container>
         </div>
+
     </ng-container>
 </div>
 

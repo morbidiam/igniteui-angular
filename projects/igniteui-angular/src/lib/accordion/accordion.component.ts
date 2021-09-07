@@ -70,7 +70,7 @@ export class IgxAccordionComponent implements AfterContentInit, AfterViewInit, O
 
     /** @hidden @internal **/
     @HostBinding('style.display')
-    public displayStyle = 'block';
+    public displayStyle = 'flex';
 
     /**
      * Get/Set the animation settings that panels should use when expanding/collpasing.

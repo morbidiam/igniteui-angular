@@ -67,30 +67,31 @@ export class IgxStepperComponent implements AfterViewInit, OnDestroy, OnInit {
      */
     @Input()
     public animationSettings: ToggleAnimationSettings = {
-        openAnimation: animation(slideInLeft,
-            {
-                params: {
-                    delay: '0s',
-                    duration: '3000ms',
-                    endOpacity: 1,
-                    startOpacity: 1,
-                    fromPosition: 'translateX(100%)',
-                    toPosition: 'translateX(0%)'
-                }
-            }),
-        closeAnimation: animation(slideInLeft,
-            {
-                params: {
-                    delay: '0s',
-                    duration: '3000ms',
-                    endOpacity: 1,
-                    startOpacity: 1,
-                    fromPosition: 'translateX(0%)',
-                    toPosition: 'translateX(100%)'
-                }
-            }),
+        // openAnimation: animation(slideInLeft,
+        //     {
+        //         params: {
+        //             delay: '0s',
+        //             duration: '3000ms',
+        //             endOpacity: 1,
+        //             startOpacity: 1,
+        //             fromPosition: 'translateX(100%)',
+        //             toPosition: 'translateX(0%)'
+        //         }
+        //     }),
+        // closeAnimation: animation(slideInLeft,
+        //     {
+        //         params: {
+        //             delay: '0s',
+        //             duration: '3000ms',
+        //             endOpacity: 1,
+        //             startOpacity: 1,
+        //             fromPosition: 'translateX(0%)',
+        //             toPosition: 'translateX(100%)'
+        //         }
+        //     }),
+        openAnimation: growVerIn,
+        closeAnimation: growVerOut
     };
-
 
     /** Emitted when a node is expanding, before it finishes
      *
@@ -193,14 +194,10 @@ export class IgxStepperComponent implements AfterViewInit, OnDestroy, OnInit {
     private unsubChildren$ = new Subject<void>();
     private _orientation = IgxStepperOrienatation.Horizontal;
 
-
-    public getOrientationDisplay() {
-        if (this._orientation === IgxStepperOrienatation.Horizontal) {
-            return 'flex';
-        } else {
-            return 'block';
-        }
-    }
+    constructor(public navService: IgxStepperNavigationService, public stepperService: IgxStepperService) {
+        this.navService.register(this);
+        this.stepperService.register(this);
+     }
 
 
     /** @hidden @internal */
@@ -242,6 +239,13 @@ export class IgxStepperComponent implements AfterViewInit, OnDestroy, OnInit {
         this.destroy$.complete();
     }
 
+    public getOrientationDisplay() {
+        if (this._orientation === IgxStepperOrienatation.Horizontal) {
+            return 'flex';
+        } else {
+            return 'block';
+        }
+    }
     // private expandToNode(node: IgxTreeNode<any>) {
     //     if (node && node.parentNode) {
     //         node.path.forEach(n => {
@@ -257,13 +261,13 @@ export class IgxStepperComponent implements AfterViewInit, OnDestroy, OnInit {
             if (event.cancel) {
                 return;
             }
-            // this.navService.update_visible_cache(event.node, false);
+            this.navService.update_visible_cache(event.step, false);
         });
         this.stepExpanding.pipe(takeUntil(this.destroy$)).subscribe(event => {
             if (event.cancel) {
                 return;
             }
-            // this.navService.update_visible_cache(event.node, true);
+            this.navService.update_visible_cache(event.step, true);
         });
     }
 
@@ -271,19 +275,19 @@ export class IgxStepperComponent implements AfterViewInit, OnDestroy, OnInit {
         this.unsubChildren$.next();
 
         this.steps.forEach(step => {
-            // step.expandedChange.pipe(takeUntil(this.unsubChildren$)).subscribe(nodeState => {
-            //     this.navService.update_visible_cache(node, nodeState);
-            // });
+            step.expandedChange.pipe(takeUntil(this.unsubChildren$)).subscribe(stepState => {
+                this.navService.update_visible_cache(step, stepState);
+            });
 
-            // node.closeAnimationDone.pipe(takeUntil(this.unsubChildren$)).subscribe(() => {
-            //     const targetElement = this.navService.focusedNode?.header.nativeElement;
-            //     this.scrollNodeIntoView(targetElement);
-            // });
+            step.closeAnimationDone.pipe(takeUntil(this.unsubChildren$)).subscribe(() => {
+                // const targetElement = this.navService.focusedStep?.header.nativeElement;
+                // this.scrollNodeIntoView(targetElement);
+            });
 
-            // node.openAnimationDone.pipe(takeUntil(this.unsubChildren$)).subscribe(() => {
-            //     const targetElement = this.navService.focusedNode?.header.nativeElement;
-            //     this.scrollNodeIntoView(targetElement);
-            // });
+            step.openAnimationDone.pipe(takeUntil(this.unsubChildren$)).subscribe(() => {
+                // const targetElement = this.navService.focusedStep?.header.nativeElement;
+                // this.scrollNodeIntoView(targetElement);
+            });
 
         });
         // this.navService.init_invisible_cache();
