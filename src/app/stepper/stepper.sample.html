@@ -1,4 +1,3 @@
-
 <!-- <igx-stepper #stepperNg>
     <igx-step *ngFor="let n of [1, 2, 3]">
         <igx-icon>done</igx-icon>
@@ -9,30 +8,26 @@
 
 <hr>
 
-<igx-stepper [stepType]="stepType" [labelPosition]="labelPos" 
-(activeStepChanged)="activeStepChanged($event)" (activeStepChanging)="activeStepChanging($event)"
-style="display: flex; flex-flow: row;" #stepper>
-    <igx-step #step style="margin-right: 100px;" [complete]="true"
-     (activeChanged)="activeChanged($event, step)">
+<igx-stepper #stepper>
+    <igx-step #step>
         <igx-icon igxStepIcon>done</igx-icon>
         <label igxStepLabel>Step No 1</label>
         <div>Test me daddy</div>
     </igx-step>
 
-    <igx-step #step2 style="margin-right: 100px;" [complete]="true"
-     (activeChanged)="activeChanged($event, step2)">
+    <igx-step #step2 [active]="true">
         <igx-icon igxStepIcon>calendar_today</igx-icon>
         <label igxStepLabel>Step No 2</label>
         <igx-date-picker></igx-date-picker>
     </igx-step>
 
-    <igx-step #step3 style="margin-right: 100px;" (activeChanged)="activeChanged($event, step3)">
+    <igx-step #step3>
         <igx-icon igxStepIcon>alarm</igx-icon>
         <label igxStepLabel>Step No 3</label>
         <igx-time-picker></igx-time-picker>
     </igx-step>
 
-    <igx-step #step4 style="margin-right: 100px;" (activeChanged)="activeChanged($event, step4)">
+    <igx-step #step4 [active]="true">
         <igx-icon igxStepIcon>check_circle</igx-icon>
         <label igxStepLabel>Step No 4</label>
         <igx-select [placeholder]="'Pick One'">
@@ -43,7 +38,7 @@ style="display: flex; flex-flow: row;" #stepper>
         </igx-select>
     </igx-step>
 
-    <igx-step #step5 style="margin-right: 100px;" (activeChanged)="activeChanged($event, step5)">
+    <igx-step #step5>
         <igx-icon igxStepIcon>delete</igx-icon>
         <label igxStepLabel>Step No 5</label>
         <div>
@@ -52,7 +47,7 @@ style="display: flex; flex-flow: row;" #stepper>
     </igx-step>
 </igx-stepper>
 <br>
-<button (click)="stepper.navigateTo(1)">Navigate to 2 Step</button>
-<igx-buttongroup [values]="stepTypes" (selected)="toggleStepTypes($event)"></igx-buttongroup>
-<igx-buttongroup [values]="labelPositions" (selected)="toggleLabelPos($event)"></igx-buttongroup>
+<!-- <button (click)="stepper.navigateTo(1)">Navigate to 2 Step</button> -->
+<!-- <igx-buttongroup [values]="stepTypes" (selected)="toggleStepTypes($event)"></igx-buttongroup> -->
+<!-- <igx-buttongroup [values]="labelPositions" (selected)="toggleLabelPos($event)"></igx-buttongroup> -->
 <button (click)="changeOrientation()">Change Orientation</button>
