@@ -61,6 +61,17 @@ export class IgxStepperComponent extends IgxCarouselComponentBase implements OnI
     };
 
     /**
+     * Get/Set whether the stepper is linear.
+     * Only if the active step is valid the user is able to move forward.
+     *
+     * ```html
+     * <igx-stepper [linear]="true"></igx-stepper>
+     * ```
+     */
+    @Input()
+    public linear = false;
+
+    /**
      * Get/Set the stepper orientation.
      *
      * ```typescript
@@ -131,7 +142,15 @@ export class IgxStepperComponent extends IgxCarouselComponentBase implements OnI
     }
 
     /** @hidden @internal */
-    public ngOnInit() { }
+    public ngOnInit() {
+        this.enterAnimationDone.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.activeStepChanged.emit({ owner: this, activeStep: this.stepperService.activeStep });
+        });
+        this.leaveAnimationDone.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.stepperService.collapse(this.stepperService.previousActiveStep);
+            this.stepperService.previousActiveStep.cdr.markForCheck();
+        });
+    }
 
     /** @hidden @internal */
     public ngAfterViewInit() {

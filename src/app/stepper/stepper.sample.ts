@@ -1,7 +1,5 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import {
-    IgxStepperLabelPosition, IgxStepperOrienatation, IgxStepperProgressLine, IgxStepType
-} from 'projects/igniteui-angular/src/lib/stepper/common';
+import { IgxStepperOrienatation } from 'projects/igniteui-angular/src/lib/stepper/common';
 import { IgxStepperComponent } from 'projects/igniteui-angular/src/lib/stepper/igx-stepper.component';
 
 @Component({
