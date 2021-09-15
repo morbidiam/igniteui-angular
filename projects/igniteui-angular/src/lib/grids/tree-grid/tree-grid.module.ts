@@ -10,7 +10,7 @@ import { IgxTreeGridSummaryPipe } from './tree-grid.summary.pipe';
 import { IgxRowLoadingIndicatorTemplateDirective } from './tree-grid.directives';
 import { IgxTreeGridGroupingPipe } from './tree-grid.grouping.pipe';
 import { IgxTreeGridGroupByAreaComponent } from '../grouping/tree-grid-group-by-area.component';
-import { IgxPivotFilterPipe, IgxPivotPipe } from './pivot.pipes';
+import { IgxPivotFilterPipe, IgxPivotRowPipe } from './pivot.pipes';
 /**
  * @hidden
  */
@@ -28,8 +28,8 @@ import { IgxPivotFilterPipe, IgxPivotPipe } from './pivot.pipes';
     IgxTreeGridSummaryPipe,
     IgxRowLoadingIndicatorTemplateDirective,
     IgxTreeGridNormalizeRecordsPipe,
+    IgxPivotRowPipe,
     IgxTreeGridGroupingPipe,
-    IgxPivotPipe,
     IgxPivotFilterPipe,
     IgxTreeGridGroupByAreaComponent
   ],
@@ -40,7 +40,7 @@ import { IgxPivotFilterPipe, IgxPivotPipe } from './pivot.pipes';
     IgxRowLoadingIndicatorTemplateDirective,
     IgxGridCommonModule,
     IgxTreeGridGroupingPipe,
-    IgxPivotPipe,
+    IgxPivotRowPipe,
     IgxPivotFilterPipe,
     IgxTreeGridGroupByAreaComponent
   ],

@@ -3,8 +3,17 @@
         <igx-buttongroup [values]="displayDensities" (selected)="selectDensity($event)"></igx-buttongroup>
         <igx-switch *ngIf="groupArea" [(ngModel)]="groupArea.hideGroupedColumns">Hide Grouped Columns</igx-switch>
     </div>
+    <igx-grid [data]="data | pivotRow:rowDimensions:rowAggregations">
+        <igx-column-group *ngFor="let colGroup of columnGroups" [movable]="colGroup.movable" [header]="colGroup.header" [collapsible]='colGroup.collapsible' [expanded]='colGroup.expanded'>
+            <igx-column *ngFor="let c of colGroup.columns" [field]="c.field" [header]="c.field" [pinned]="c.pinned"
+                [movable]="c.movable" [groupable]="true" [resizable]="c.resizable" [width]="c.width"
+                [sortable]="true" [filterable]="true" [editable]="true" [hidden]="c.hidden" [hasSummary]="c.summary"
+                [minWidth]="c.minWidth" [maxWidth]="c.maxWidth" [dataType]="c.dataType" [header]="c.header">
+            </igx-column>
+        </igx-column-group> 
+    </igx-grid>
 
-    <igx-tree-grid #grid1
+    <!-- <igx-tree-grid #grid1
         [data]="data | pivot:groupingExpressions:groupKey:childDataKey:grid1:employeeAggregations:pivotCols"
         selectionType='multi'
         [childDataKey]="childDataKey"
@@ -16,11 +25,11 @@
         [allowFiltering]="true"
         [filterMode]="'excelStyleFilter'"
         (cellEditDone)="cellEditDone($event)">
-        <!-- <igx-grid-toolbar [displayDensity]="grid1.displayDensity">
+         <igx-grid-toolbar [displayDensity]="grid1.displayDensity">
             <igx-grid-toolbar-actions>
                 <igx-grid-toolbar-hiding></igx-grid-toolbar-hiding>
             </igx-grid-toolbar-actions>
-        </igx-grid-toolbar> -->
+        </igx-grid-toolbar> 
 
         <igx-tree-grid-group-by-area
             #groupArea
@@ -32,17 +41,21 @@
 
         <igx-column [field]='groupKey' [resizable]='true' [width]="'250px'" [hidden]='groupingExpressions.length === 0'></igx-column>
 
-        <!-- <igx-column *ngFor="let c of columns" [field]="c.field" [header]="c.field" [pinned]="c.pinned"
+        <igx-column *ngFor="let c of columns" [field]="c.field" [header]="c.field" [pinned]="c.pinned"
             [movable]="c.movable" [groupable]="true" [resizable]="c.resizable" [width]="c.width"
             [sortable]="true" [filterable]="true" [editable]="true" [hidden]="c.hidden" [hasSummary]="c.summary"
             [minWidth]="c.minWidth" [maxWidth]="c.maxWidth" [dataType]="c.dataType">
-        </igx-column> -->
-        <igx-column-group *ngFor="let colGroup of columnGroups" [movable]="colGroup.movable" [header]="colGroup.header" [collapsible]='colGroup.collapsible' [expanded]='colGroup.expanded'>
+        </igx-column>
+         <igx-column-group *ngFor="let colGroup of columnGroups" [movable]="colGroup.movable" [header]="colGroup.header" [collapsible]='colGroup.collapsible' [expanded]='colGroup.expanded'>
             <igx-column *ngFor="let c of colGroup.columns" [field]="c.field" [header]="c.field" [pinned]="c.pinned"
                 [movable]="c.movable" [groupable]="true" [resizable]="c.resizable" [width]="c.width"
                 [sortable]="true" [filterable]="true" [editable]="true" [hidden]="c.hidden" [hasSummary]="c.summary"
                 [minWidth]="c.minWidth" [maxWidth]="c.maxWidth" [dataType]="c.dataType" [header]="c.header">
             </igx-column>
-        </igx-column-group>
-    </igx-tree-grid>
+        </igx-column-group> 
+    </igx-tree-grid> -->
+
+    <!-- <pre>{{data 
+        | pivotRow:rowDimensions
+        | json}}</pre> -->
 </div>

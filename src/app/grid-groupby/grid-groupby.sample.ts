@@ -151,8 +151,8 @@ export class GridGroupBySampleComponent implements OnInit {
 
     public groupUngroupMultiple() {
         const expr = [
-            { fieldName: 'ContactTitle', dir: 1, ignoreCase: true, strategy: DefaultSortingStrategy.instance() },
-            { fieldName: 'Address', dir: 2, ignoreCase: true, strategy: DefaultSortingStrategy.instance() },
+            { fieldName: 'ContactTitle', dir: 1, ignoreCase: true, strategy: DefaultSortingStrategy.instance(), groupingComparer: (a, b) => 0 },
+            { fieldName: 'ContactTitle', dir: 2, ignoreCase: true, strategy: DefaultSortingStrategy.instance() },
         ];
         this.grid1.groupingExpressions = expr;
     }
