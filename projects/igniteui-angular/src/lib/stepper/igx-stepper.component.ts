@@ -2,7 +2,7 @@ import { AnimationBuilder } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import {
     AfterViewInit, Component, HostBinding, OnDestroy, OnInit,
-    Input, Output, EventEmitter, ContentChildren, QueryList, ElementRef, NgModule, ViewChild
+    Input, Output, EventEmitter, ContentChildren, QueryList, ElementRef, NgModule, ChangeDetectorRef
 } from '@angular/core';
 import { IgxCarouselComponentBase } from 'igniteui-angular';
 import { Subject } from 'rxjs';
@@ -32,8 +32,6 @@ import { IgxStepperService } from './stepper.service';
     ]
 })
 export class IgxStepperComponent extends IgxCarouselComponentBase implements OnInit, AfterViewInit, OnDestroy {
-
-    @ViewChild('horizontalContentContainer') public horizontalContentContainer: ElementRef;
 
     @HostBinding('class.igx-stepper')
     public cssClass = 'igx-stepper';
@@ -98,6 +96,8 @@ export class IgxStepperComponent extends IgxCarouselComponentBase implements OnI
                 closeAnimation: growVerOut
             };
         }
+        // TODO: activeChange event is not emitted for the collapsing steps
+        this.stepperService.collapsingSteps.clear();
         this._orientation = value;
     }
 
@@ -128,7 +128,7 @@ export class IgxStepperComponent extends IgxCarouselComponentBase implements OnI
     }
 
     public get steps(): IgxStepComponent[] {
-        return this._steps.toArray();
+        return this._steps?.toArray() || [];
     }
 
     /** @hidden @internal */
@@ -147,8 +147,12 @@ export class IgxStepperComponent extends IgxCarouselComponentBase implements OnI
             this.activeStepChanged.emit({ owner: this, activeStep: this.stepperService.activeStep });
         });
         this.leaveAnimationDone.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.stepperService.collapse(this.stepperService.previousActiveStep);
-            this.stepperService.previousActiveStep.cdr.markForCheck();
+            if (this.stepperService.collapsingSteps.size === 1) {
+                this.stepperService.collapse(this.stepperService.previousActiveStep);
+            } else {
+                Array.from(this.stepperService.collapsingSteps).slice(0, this.stepperService.collapsingSteps.size - 1)
+                    .forEach(step => this.stepperService.collapse(step));
+            }
         });
     }
 
@@ -169,33 +173,33 @@ export class IgxStepperComponent extends IgxCarouselComponentBase implements OnI
         this.destroy$.complete();
     }
 
-    public dummy() {
+    public playHorizontalAnimations() {
         this.previousItem = this.stepperService.previousActiveStep;
         this.currentItem = this.stepperService.activeStep;
         this.triggerAnimations();
     }
 
     protected getPreviousElement(): HTMLElement {
-        return this.stepperService.previousActiveStep?.horizontalContentContainer.nativeElement;
+        return this.stepperService.previousActiveStep?.contentContainer.nativeElement;
     }
 
     protected getCurrentElement(): HTMLElement {
-        return this.stepperService.activeStep.horizontalContentContainer.nativeElement;
+        return this.stepperService.activeStep.contentContainer.nativeElement;
     }
 
     private subToChanges() {
         this.unsubChildren$.next();
-        this.steps.forEach(step => {
-            step.horizontalContentContainer = this.horizontalContentContainer;
-            // step.closeAnimationDone.pipe(takeUntil(this.unsubChildren$)).subscribe(() => {
-            //     const targetElement = this.navService.focusedNode?.header.nativeElement;
-            //     this.scrollNodeIntoView(targetElement);
-            // });
-            // step.openAnimationDone.pipe(takeUntil(this.unsubChildren$)).subscribe(() => {
-            //     const targetElement = this.navService.focusedNode?.header.nativeElement;
-            //     this.scrollNodeIntoView(targetElement);
-            // });
-        });
+        // this.steps.forEach(step => {
+        // step.horizontalContentContainer = this.horizontalContentContainer;
+        // step.closeAnimationDone.pipe(takeUntil(this.unsubChildren$)).subscribe(() => {
+        //     const targetElement = this.navService.focusedNode?.header.nativeElement;
+        //     this.scrollNodeIntoView(targetElement);
+        // });
+        // step.openAnimationDone.pipe(takeUntil(this.unsubChildren$)).subscribe(() => {
+        //     const targetElement = this.navService.focusedNode?.header.nativeElement;
+        //     this.scrollNodeIntoView(targetElement);
+        // });
+        // });
         // this.navService.init_invisible_cache();
     }
 

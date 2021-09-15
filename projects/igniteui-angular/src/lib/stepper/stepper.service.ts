@@ -40,16 +40,16 @@ export class IgxStepperService {
 
             if (this.stepper.orientation === IgxStepperOrienatation.Vertical) {
                 this.previousActiveStep.playCloseAnimation(
-                    this.previousActiveStep.verticalContentContainer
+                    this.previousActiveStep.contentContainer
                 );
                 this.activeStep.cdr.detectChanges();
 
                 this.activeStep.playOpenAnimation(
-                    this.activeStep.verticalContentContainer
+                    this.activeStep.contentContainer
                 );
             } else {
                 this.activeStep.cdr.detectChanges();
-                this.stepper.dummy();
+                this.stepper.playHorizontalAnimations();
             }
 
         }

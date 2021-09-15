@@ -7,7 +7,7 @@ import { IgxSlideComponentBase } from 'igniteui-angular';
 import { takeUntil } from 'rxjs/operators';
 import { Direction } from '../../carousel/carousel-base';
 import { ToggleAnimationPlayer, ToggleAnimationSettings } from '../../expansion-panel/toggle-animation-component';
-import { IgxStepperOrienatation, IgxStepperProgressLine, IGX_STEPPER_COMPONENT, IStepTogglingEventArgs } from '../common';
+import { IgxStepperOrienatation, IgxStepperProgressLine, IGX_STEPPER_COMPONENT } from '../common';
 import { IgxStepperComponent } from '../igx-stepper.component';
 import { IgxStepperService } from '../stepper.service';
 
@@ -221,13 +221,12 @@ export class IgxStepComponent extends ToggleAnimationPlayer implements OnInit, A
      * @hidden
      * @internal
      */
-    @ViewChild('contentTemplate',)
+    @ViewChild('contentTemplate', { static: true })
     public contentTemplate: TemplateRef<any>;
 
-    @ViewChild('verticalContentContainer', { read: ElementRef })
-    public verticalContentContainer: ElementRef;
+    @ViewChild('contentContainer')
+    public contentContainer: ElementRef;
 
-    public horizontalContentContainer: ElementRef;
 
     // /** @hidden @internal */
     // public get isCompact(): boolean {
@@ -242,7 +241,16 @@ export class IgxStepComponent extends ToggleAnimationPlayer implements OnInit, A
     /** @hidden @internal */
     public isFocused: boolean;
 
-    public direction: Direction = Direction.NONE;
+    public get direction(): Direction {
+        if (this.index === 0) {
+            return Direction.PREV;
+        }
+        return this.stepperService.previousActiveStep
+            && this.stepperService.previousActiveStep.index > this.index
+            ? Direction.PREV
+            : Direction.NEXT;
+    }
+
     public previous: boolean;
 
 
@@ -293,8 +301,8 @@ export class IgxStepComponent extends ToggleAnimationPlayer implements OnInit, A
     /** @hidden @internal */
     public ngAfterViewInit() { }
 
-    public getStepHeaderClasses() {
-        if(this.active) {
+    public get stepHeaderClasses() {
+        if (this.active) {
             return 'igx-step__header--active';
         }
         if (this.disabled) {

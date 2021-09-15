@@ -13,3 +13,32 @@
     flex-direction: column;
     gap: 20px;
 }
+
+.horizontal-container {
+    overflow: hidden;
+    position: relative;
+    flex-grow: 1;
+    display: block;
+    height: 200px;
+
+    ::ng-deep {
+        .igx-step__content {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            z-index: -1;
+        }
+
+        .igx-step__content--active {
+            position: relative;
+            z-index: 1;
+        }
+    }
+}

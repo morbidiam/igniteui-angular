@@ -80,6 +80,7 @@ export abstract class IgxCarouselComponentBase {
     private resetAnimations() {
         if (this.animationStarted(this.leaveAnimationPlayer)) {
             this.leaveAnimationPlayer.reset();
+            this.leaveAnimationDone.emit();
         }
 
         if (this.animationStarted(this.enterAnimationPlayer)) {
