@@ -79,6 +79,7 @@ export abstract class BaseProgressDirective {
     protected _max = 100;
     protected _value = MIN_VALUE;
     protected _newVal = MIN_VALUE;
+    protected _cachedValue;
     protected _animate = true;
     protected _step;
 
@@ -152,9 +153,16 @@ export abstract class BaseProgressDirective {
     @HostBinding('attr.aria-valuemax')
     @Input()
     public set max(maxNum: number) {
-        if (maxNum < this._value) {
-            this._value = maxNum;
+        if (this._contentInit) {
+            this._cachedValue = this._value;
         }
+        if (maxNum < this._value) {
+            this.value = maxNum;
+            return;
+        }
+        const fromProgress: number = Math.round(toPercent(this._value, this._max));
+        const toProgress: number = Math.round(toPercent(this._value, maxNum));
+        this.triggerProgressTransition(fromProgress, toProgress, fromProgress);
         this._max = maxNum;
     }
 
@@ -234,28 +242,29 @@ export abstract class BaseProgressDirective {
             return;
         }
         if (this._contentInit) {
-            this.triggerProgressTransition(this._value, valInRange);
+            const fromProgress: number = Math.round(toPercent(this._value, this._max));
+            const toProgress: number = Math.round(toPercent(valInRange, this._max));
+            this.triggerProgressTransition(fromProgress, toProgress);
         } else {
             this._initValue = valInRange;
         }
-        this._value = valInRange;
     }
 
-    protected triggerProgressTransition(oldVal, newVal) {
-        if (oldVal === newVal) {
+    protected triggerProgressTransition(oldProgress, newProgress, currentProgress?) {
+        if (oldProgress === newProgress) {
             return;
         }
 
         const changedValues = {
-            currentValue: newVal,
-            previousValue: oldVal
+            currentValue: oldProgress,
+            previousValue: newProgress
         };
 
-        const stepDirection = this.directionFlow(oldVal, newVal);
+        const stepDirection = this.directionFlow(oldProgress, newProgress);
         if (this._animate) {
-            this.runAnimation(newVal, stepDirection);
+            this.runAnimation(newProgress, stepDirection, currentProgress);
         } else {
-            this.updateProgressDirectly(newVal);
+            this.updateProgressDirectly(newProgress);
         }
 
         this.progressChanged.emit(changedValues);
@@ -264,27 +273,34 @@ export abstract class BaseProgressDirective {
     /**
      * @hidden
      */
-    protected runAnimation(val: number, step: number) {
+    protected runAnimation(val: number, step: number, currentProgress?: number) {
         this.requestAnimationId = requestAnimationFrame(
-            () => this.updateProgressSmoothly.call(this, val, step));
+            () => this.updateProgressSmoothly.call(this, val, step, currentProgress));
     }
 
     /**
      * @hidden
      */
-    protected updateProgressSmoothly(val: number, step: number) {
-        this._value = valueInRange(this._value, this._max) + step;
-        const passedValue = toPercent(val, this._max);
-        const progressValue = toPercent(this._value, this._max);
-        if (this.valueInPercent === passedValue) {
-            this.updateProgress(val);
+    protected updateProgressSmoothly(val: number, step: number, currentProgress?: number) {
+        if (step === 0) {
+            return;
+        }
+        // this._value = valueInRange(this._value, this._max) + step;
+
+        currentProgress = currentProgress ?? toPercent(this._value, this._max);
+        const nextStepProgress = currentProgress + step; // current percent + progress step
+
+        if ((step > 0 && Math.round(nextStepProgress) > Math.round(val)) || (step < 0 && Math.round(nextStepProgress) < Math.round(val))) {
+            // needed ?
+            // this.updateProgress(val);
+            this._value = this._cachedValue ?? this._value;
             cancelAnimationFrame(this.requestAnimationId);
-        } else if (this.isInLimitRange(progressValue, passedValue, step)) {
-            this.updateProgress(val);
-            cancelAnimationFrame(this.requestAnimationId);
+        // } else if (this.isInLimitRange(progressValue, passedValue, step)) {
+        //     this.updateProgress(val);
+        //     cancelAnimationFrame(this.requestAnimationId);
         } else {
-            this.valueInPercent = progressValue;
-            this.requestAnimationId = requestAnimationFrame(() => this.updateProgressSmoothly.call(this, val, step));
+            this._value = valueInRange(toValue(nextStepProgress, this._max), this._max);
+            this.requestAnimationId = requestAnimationFrame(() => this.updateProgressSmoothly.call(this, val, step, nextStepProgress));
         }
     }
 
@@ -292,15 +308,15 @@ export abstract class BaseProgressDirective {
      * @hidden
      */
     protected updateProgressDirectly(val: number) {
-        this._value = valueInRange(val, this._max);
-        this.valueInPercent = toPercent(this._value, this._max);
+        // this._value = valueInRange(val, this._max);
+        this.valueInPercent = val;
     }
 
     /**
      * @hidden
      */
-    protected directionFlow(currentValue: number, prevValue: number): number {
-        return currentValue < prevValue ? this.step : -this.step;
+    protected directionFlow(oldValue: number, newValue: number): number {
+        return newValue === oldValue ? 0 : newValue > oldValue ? this.step : -this.step;
     }
 
     /**
@@ -483,8 +499,10 @@ export class IgxLinearProgressBarComponent extends BaseProgressDirective impleme
         return this.type === IgxProgressType.SUCCESS;
     }
 
-    public ngAfterContentInit() {
-        this.triggerProgressTransition(MIN_VALUE, this._initValue);
+    public ngAfterContentInit(): void {
+        const fromProgress: number = Math.round(toPercent(MIN_VALUE, this._max));
+        const toProgress: number = Math.round(toPercent(this._initValue, this._max));
+        this.triggerProgressTransition(fromProgress, toProgress, fromProgress);
         this._contentInit = true;
     }
 }
@@ -571,11 +589,12 @@ export class IgxCircularProgressBarComponent extends BaseProgressDirective imple
         super();
     }
 
-    public ngAfterContentInit() {
-        this.triggerProgressTransition(MIN_VALUE, this._initValue);
+    public ngAfterContentInit(): void {
+        const fromProgress: number = Math.round(toPercent(MIN_VALUE, this._max));
+        const toProgress: number = Math.round(toPercent(this._initValue, this._max));
+        this.triggerProgressTransition(fromProgress, toProgress, fromProgress);
         this._contentInit = true;
     }
-
     public ngAfterViewInit() {
         this.renderer.setStyle(
             this._svgCircle.nativeElement,
