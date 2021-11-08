@@ -41,23 +41,17 @@ export class PivotGridSampleComponent {
                 {
                     memberName: 'Date',
                     enabled: true
-                },
-                {
-                    years: false,
-                    quarters: true,
-                    months: false,
-                    total: true
                 }
             ),
-            {
-                memberName: 'AllSel',
-                memberFunction: () => 'AllSel',
-                enabled: true,
-                childLevel: {
-                    memberName: 'SellerName',
-                    enabled: true
-                }
-            }
+            // {
+            //     memberName: 'AllSel',
+            //     memberFunction: () => 'AllSel',
+            //     enabled: true,
+            //     childLevel: {
+            //         memberName: 'SellerName',
+            //         enabled: true
+            //     }
+            // }
         ],
         values: [
             {
