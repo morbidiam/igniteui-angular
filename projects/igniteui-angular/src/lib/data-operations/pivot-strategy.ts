@@ -51,7 +51,8 @@ export class PivotRowDimensionsStrategy implements IPivotDimensionStrategy {
                 } else {
                     const newData = [...data];
                     for (let i = 0; i < newData.length; i++) {
-                        const currData = newData[i][prevDim.memberName + '_' + pivotKeys.records];
+                        const alldata = newData[i][prevDim.memberName + '_' + pivotKeys.records];
+                        const currData = PivotUtil.getDirectLeafs(alldata, pivotKeys);
                         const hierarchyFields = PivotUtil
                             .getFieldsHierarchy(currData, [row], PivotDimensionType.Row, pivotKeys);
                         const siblingData = PivotUtil
