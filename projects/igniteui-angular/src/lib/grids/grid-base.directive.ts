@@ -3137,6 +3137,8 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
             this.summaryService.clearSummaryCache(args);
         });
 
+        this.rowPinned.pipe(destructor).subscribe(() => this.buildDataView());
+
         this.subscribeToTransactions();
 
         this.resizeNotify.pipe(
@@ -3473,12 +3475,13 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
      */
     public ngAfterViewInit() {
         this.initPinning();
+        this.cdr.detectChanges();
+        this.buildDataView();
         this.calculateGridSizes();
         this._init = false;
         this.cdr.reattach();
         this._setupRowObservers();
         this._zoneBegoneListeners();
-        this.buildDataView();
 
         const vertScrDC = this.verticalScrollContainer.displayContainer;
         vertScrDC.addEventListener('scroll', this.preventContainerScroll.bind(this));
