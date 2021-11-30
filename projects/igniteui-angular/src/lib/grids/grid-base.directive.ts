@@ -3137,8 +3137,6 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
             this.summaryService.clearSummaryCache(args);
         });
 
-        this.rowPinned.pipe(destructor).subscribe(() => this.buildDataView());
-
         this.subscribeToTransactions();
 
         this.resizeNotify.pipe(
@@ -3489,6 +3487,7 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
         this._pinnedRowList.changes
             .pipe(takeUntil(this.destroy$))
             .subscribe((change: QueryList<IgxGridRowComponent>) => {
+                this.buildDataView();
                 this.onPinnedRowsChanged(change);
             });
 
@@ -6902,6 +6901,8 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
     }
 
     private buildDataView() {
+        console.log('Building data view');
+        console.log(this.pinnedDataView?.length);
         this._dataView = this.isRowPinningToTop ?
             [...this.pinnedDataView, ...this.unpinnedDataView] :
             [...this.unpinnedDataView, ...this.pinnedDataView];
