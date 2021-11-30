@@ -6901,8 +6901,6 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
     }
 
     private buildDataView() {
-        console.log('Building data view');
-        console.log(this.pinnedDataView?.length);
         this._dataView = this.isRowPinningToTop ?
             [...this.pinnedDataView, ...this.unpinnedDataView] :
             [...this.unpinnedDataView, ...this.pinnedDataView];
