@@ -3223,7 +3223,6 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
                 $event.containerSize = this.calcHeight;
             }
             this.evaluateLoadingState();
-            this.buildDataView();
         });
 
         this.verticalScrollContainer.scrollbarVisibilityChanged.pipe(filter(() => !this._init), destructor).subscribe(() => {
@@ -3239,7 +3238,7 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
         this.onDensityChanged.pipe(destructor).subscribe(() => {
             this.crudService.endEdit(false);
             if (this._summaryRowHeight === 0) {
-            this.summaryService.summaryHeight = 0;
+                this.summaryService.summaryHeight = 0;
             }
             this.notifyChanges(true);
         });
@@ -3432,18 +3431,21 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
      */
     public setFilteredSortedData(data, pinned: boolean) {
         data = data || [];
-        if (this.pinnedRecordsCount > 0 && pinned) {
-            this._filteredSortedPinnedData = data;
-            this.pinnedRecords = data;
-            this._filteredSortedData = this.isRowPinningToTop ? [... this._filteredSortedPinnedData, ... this._filteredSortedUnpinnedData] :
-                [... this._filteredSortedUnpinnedData, ... this._filteredSortedPinnedData];
-            this.refreshSearch(true, false);
-        } else if (this.pinnedRecordsCount > 0 && !pinned) {
-            this._filteredSortedUnpinnedData = data;
+        if (this.pinnedRecordsCount > 0) {
+            if (pinned) {
+                this._filteredSortedPinnedData = data;
+                this.pinnedRecords = data;
+                this._filteredSortedData = this.isRowPinningToTop ? [... this._filteredSortedPinnedData, ... this._filteredSortedUnpinnedData] :
+                    [... this._filteredSortedUnpinnedData, ... this._filteredSortedPinnedData];
+                this.refreshSearch(true, false);
+            } else {
+                this._filteredSortedUnpinnedData = data;
+            }
         } else {
             this._filteredSortedData = data;
             this.refreshSearch(true, false);
         }
+        this.buildDataView();
     }
 
     /**
@@ -3491,8 +3493,6 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
      */
     public ngAfterViewInit() {
         this.initPinning();
-        this.cdr.detectChanges();
-        this.buildDataView();
         this.calculateGridSizes();
         this._init = false;
         this.cdr.reattach();
@@ -3505,7 +3505,6 @@ export abstract class IgxGridBaseDirective extends DisplayDensityBase implements
         this._pinnedRowList.changes
             .pipe(takeUntil(this.destroy$))
             .subscribe((change: QueryList<IgxGridRowComponent>) => {
-                this.buildDataView();
                 this.onPinnedRowsChanged(change);
             });
 
