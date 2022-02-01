@@ -640,12 +640,12 @@ export class IgxGridNavigationService {
         let direction = this.grid.sortingExpressions.find(expr => expr.fieldName === column.field)?.dir;
         if (ctrl && key.includes('up') && column.sortable && !column.columnGroup) {
             direction = direction === SortingDirection.Asc ? SortingDirection.None : SortingDirection.Asc;
-            this.grid.sort({ fieldName: column.field, dir: direction, ignoreCase: false });
+            this.grid.sort({ fieldName: column.field, dir: direction, ignoreCase: false, dataType: column.dataType });
             return;
         }
         if (ctrl && key.includes('down') && column.sortable && !column.columnGroup) {
             direction = direction === SortingDirection.Desc ? SortingDirection.None : SortingDirection.Desc;
-            this.grid.sort({ fieldName: column.field, dir: direction, ignoreCase: false });
+            this.grid.sort({ fieldName: column.field, dir: direction, ignoreCase: false, dataType: column.dataType  });
             return;
         }
         if (shift && alt && this.isToggleKey(key) && !column.columnGroup && column.groupable) {

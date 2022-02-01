@@ -1,5 +1,5 @@
 import { IBaseEventArgs } from '../core/utils';
-import { GridType } from '../grids/common/grid.interface';
+import { GridColumnDataType } from './data-util';
 
 export enum SortingDirection {
     None = 0,
@@ -12,6 +12,7 @@ export interface ISortingExpression extends IBaseEventArgs {
     dir: SortingDirection;
     ignoreCase?: boolean;
     strategy?: ISortingStrategy;
+    dataType?: GridColumnDataType;
 }
 
 export interface ISortingStrategy {
@@ -22,8 +23,7 @@ export interface ISortingStrategy {
         ignoreCase: boolean,
         valueResolver: (obj: any, key: string, isDate?: boolean) => any,
         isDate?: boolean,
-        isTime?: boolean,
-        grid?: GridType
+        isTime?: boolean
     ) => any[];
 }
 

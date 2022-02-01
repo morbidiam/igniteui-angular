@@ -526,7 +526,7 @@ export abstract class IgxBaseExporter {
             if (hasSorting && !this.options.ignoreSorting) {
                 this._sort = cloneValue(grid.sortingExpressions[0]);
 
-                data = DataUtil.sort(data, grid.sortingExpressions, grid.sortStrategy, grid);
+                data = DataUtil.sort(data, grid.sortingExpressions, grid.sortStrategy);
             }
 
             this.addHierarchicalGridData(grid, data);
@@ -600,7 +600,7 @@ export abstract class IgxBaseExporter {
                 if (hasSorting && !this.options.ignoreSorting) {
                     this._sort = cloneValue(islandGrid.sortingExpressions[0]);
 
-                    data = DataUtil.sort(data, islandGrid.sortingExpressions, islandGrid.sortStrategy, islandGrid);
+                    data = DataUtil.sort(data, islandGrid.sortingExpressions, islandGrid.sortStrategy);
                 }
             }
         } else {
@@ -630,7 +630,7 @@ export abstract class IgxBaseExporter {
                 if (hasSorting && !this.options.ignoreSorting) {
                     this._sort = cloneValue(island.sortingExpressions[0]);
 
-                    data = DataUtil.sort(data, island.sortingExpressions, island.sortStrategy, island);
+                    data = DataUtil.sort(data, island.sortingExpressions, island.sortStrategy);
                 }
             }
         }
@@ -732,7 +732,7 @@ export abstract class IgxBaseExporter {
                 //         cloneValue(grid.sortingExpressions[1]) :
                 //         cloneValue(grid.sortingExpressions[0]);
 
-                gridData = DataUtil.sort(gridData, grid.sortingExpressions, grid.sortStrategy, grid);
+                gridData = DataUtil.sort(gridData, grid.sortingExpressions, grid.sortStrategy);
             }
 
             if (hasGrouping && !this.options.ignoreGrouping) {

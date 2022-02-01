@@ -54,7 +54,7 @@ export class IgxExcelStyleSortingComponent implements OnDestroy {
                 this.esf.grid.clearSort(this.esf.column.field);
             }
         } else {
-            this.esf.grid.sort({ fieldName: this.esf.column.field, dir: sortDirection, ignoreCase: true });
+            this.esf.grid.sort({ fieldName: this.esf.column.field, dir: sortDirection, ignoreCase: true, dataType: this.esf.column.dataType  });
         }
     }
 

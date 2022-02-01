@@ -26,7 +26,7 @@ export class IgxGridSortingPipe implements PipeTransform {
         if (!expressions.length) {
             result = collection;
         } else {
-            result = DataUtil.sort(cloneArray(collection), expressions, sorting, this.grid);
+            result = DataUtil.sort(cloneArray(collection), expressions, sorting);
         }
         this.grid.setFilteredSortedData(result, pinned);
 

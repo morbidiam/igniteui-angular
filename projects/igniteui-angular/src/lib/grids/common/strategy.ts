@@ -14,7 +14,7 @@ const DATE_TIME_TYPE = 'dateTime';
 const STRING_TYPE = 'string';
 
 export interface IGridSortingStrategy {
-    sort(data: any[], expressions: ISortingExpression[], grid?: GridType): any[];
+    sort(data: any[], expressions: ISortingExpression[], valueExtractor?: (obj: any, key: string, isDate?: boolean) => any): any[];
 }
 
 export interface IGridGroupingStrategy extends IGridSortingStrategy {
@@ -22,8 +22,8 @@ export interface IGridGroupingStrategy extends IGridSortingStrategy {
 }
 
 export class IgxSorting implements IGridSortingStrategy {
-    public sort(data: any[], expressions: ISortingExpression[], grid?: GridType): any[] {
-        return this.sortDataRecursive(data, expressions, 0, grid);
+    public sort(data: any[], expressions: ISortingExpression[], valueExtractor?: (obj: any, key: string, isDate?: boolean) => any): any[] {
+        return this.sortDataRecursive(data, expressions, 0, valueExtractor);
     }
 
     protected groupDataRecursive(
@@ -136,7 +136,7 @@ export class IgxSorting implements IGridSortingStrategy {
         data: T[],
         expressions: ISortingExpression[],
         expressionIndex: number = 0,
-        grid: GridType
+        valueExtractor? : (obj: any, key: string, isDate?: boolean) => any
     ): T[] {
         let i: number;
         let j: number;
@@ -153,11 +153,10 @@ export class IgxSorting implements IGridSortingStrategy {
         if (!expr.strategy) {
             expr.strategy = DefaultSortingStrategy.instance() as any;
         }
-        const column = grid?.getColumnByName(expr.fieldName);
-        const isDate = column?.dataType === DATE_TYPE || column?.dataType === DATE_TIME_TYPE;
-        const isTime = column?.dataType === TIME_TYPE;
-        const isString = column?.dataType === STRING_TYPE;
-        data = expr.strategy.sort(data, expr.fieldName, expr.dir, expr.ignoreCase, this.getFieldValue, isDate, isTime, grid);
+        const isDate = expr.dataType === DATE_TYPE || expr.dataType  === DATE_TIME_TYPE;
+        const isTime = expr.dataType  === TIME_TYPE;
+        const isString = expr.dataType  === STRING_TYPE;
+        data = expr.strategy.sort(data, expr.fieldName, expr.dir, expr.ignoreCase, valueExtractor || this.getFieldValue, isDate, isTime);
         if (expressionIndex === exprsLen - 1) {
             return data;
         }
@@ -166,7 +165,7 @@ export class IgxSorting implements IGridSortingStrategy {
             gbData = this.groupedRecordsByExpression(data, i, expr, isDate, isString);
             gbDataLen = gbData.length;
             if (gbDataLen > 1) {
-                gbData = this.sortDataRecursive(gbData, expressions, expressionIndex + 1, grid);
+                gbData = this.sortDataRecursive(gbData, expressions, expressionIndex + 1);
             }
             for (j = 0; j < gbDataLen; j++) {
                 data[i + j] = gbData[j];

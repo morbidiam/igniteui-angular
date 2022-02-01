@@ -42,9 +42,8 @@ export type GridColumnDataType = (typeof GridColumnDataType)[keyof typeof GridCo
  * @hidden
  */
 export class DataUtil {
-    public static sort<T>(data: T[], expressions: ISortingExpression[], sorting: IGridSortingStrategy = new IgxSorting(),
-        grid?: GridType): T[] {
-        return sorting.sort(data, expressions, grid);
+    public static sort<T>(data: T[], expressions: ISortingExpression[], sorting: IGridSortingStrategy = new IgxSorting(), valueExtractor?: (obj: any, key: string, isDate?: boolean) => any): T[] {
+        return sorting.sort(data, expressions, valueExtractor);
     }
 
     public static treeGridSort(hierarchicalData: ITreeGridRecord[],
@@ -62,7 +61,7 @@ export class DataUtil {
             res.push(rec);
         });
 
-        res = DataUtil.sort(res, expressions, sorting, grid);
+        res = DataUtil.sort(res, expressions, sorting);
 
         return res;
     }
