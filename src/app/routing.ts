@@ -129,6 +129,7 @@ import { PivotGridSampleComponent } from './pivot-grid/pivot-grid.sample';
 import { PivotGridHierarchySampleComponent } from './pivot-grid-hierarchy/pivot-grid-hierarchy.sample';
 import { PivotGridNoopSampleComponent } from './pivot-grid-noop/pivot-grid-noop.sample';
 import { IgxStepperSampleComponent as StepperSampleComponent } from './stepper/stepper.sample';
+import { PivotGridRemoteSampleComponent } from './pivot-grid-remote/pivot-grid-remote.sample';
 
 const appRoutes = [
     {
@@ -614,6 +615,10 @@ const appRoutes = [
     }, {
         path: 'pivot-noop',
         component: PivotGridNoopSampleComponent
+    },
+    {
+        path:'pivot-remote',
+        component: PivotGridRemoteSampleComponent
     },
     {
         path: 'stepper',

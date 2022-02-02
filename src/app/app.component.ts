@@ -549,6 +549,11 @@ export class AppComponent implements OnInit {
             link: '/pivot-noop',
             icon: 'view_column',
             name: 'Noop Pivot Grid'
+        },
+        {
+            link: '/pivot-remote',
+            icon: 'view_column',
+            name: 'Remote Pivot Grid'
         }
     ].sort((componentLink1, componentLink2) => componentLink1.name > componentLink2.name ? 1 : -1);
 
