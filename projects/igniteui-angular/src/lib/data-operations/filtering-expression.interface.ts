@@ -1,3 +1,4 @@
+import { GridColumnDataType } from './data-util';
 import { IFilteringOperation } from './filtering-condition';
 
 export enum FilteringLogic {
@@ -13,4 +14,5 @@ export declare interface IFilteringExpression {
     condition: IFilteringOperation;
     searchVal?: any;
     ignoreCase?: boolean;
+    dataType?: GridColumnDataType;
 }

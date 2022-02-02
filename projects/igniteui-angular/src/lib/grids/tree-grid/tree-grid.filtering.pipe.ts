@@ -52,6 +52,6 @@ export class IgxTreeGridFilteringPipe implements PipeTransform {
     }
 
     private filter(data: ITreeGridRecord[], state: IFilteringState, grid?: GridType): ITreeGridRecord[] {
-        return state.strategy.filter(data, state.expressionsTree, state.advancedExpressionsTree, grid);
+        return state.strategy.filter(data, state.expressionsTree, state.advancedExpressionsTree);
     }
 }

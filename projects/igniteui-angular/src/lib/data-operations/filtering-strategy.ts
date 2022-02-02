@@ -10,7 +10,7 @@ const TimeType = 'time';
 
 export interface IFilteringStrategy {
     filter(data: any[], expressionsTree: IFilteringExpressionsTree, advancedExpressionsTree?: IFilteringExpressionsTree,
-        grid?: GridType): any[];
+        valueExtractor?: (obj: any, key: string) => any): any[];
 }
 
 export class NoopFilteringStrategy implements IFilteringStrategy {
@@ -28,13 +28,13 @@ export class NoopFilteringStrategy implements IFilteringStrategy {
 }
 
 export abstract class BaseFilteringStrategy implements IFilteringStrategy  {
-    public findMatchByExpression(rec: any, expr: IFilteringExpression, isDate?: boolean, isTime?: boolean, grid?: GridType): boolean {
+    public findMatchByExpression(rec: any, expr: IFilteringExpression, isDate?: boolean, isTime?: boolean, valueExtractor?: (obj: any, key: string) => any): boolean {
         const cond = expr.condition;
-        const val = this.getFieldValue(rec, expr.fieldName, isDate, isTime, grid);
+        const val = valueExtractor ? valueExtractor.call(this, rec, expr.fieldName) : this.getFieldValue(rec, expr.fieldName, isDate, isTime);
         return cond.logic(val, expr.searchVal, expr.ignoreCase);
     }
 
-    public matchRecord(rec: any, expressions: IFilteringExpressionsTree | IFilteringExpression, grid?: GridType): boolean {
+    public matchRecord(rec: any, expressions: IFilteringExpressionsTree | IFilteringExpression, valueExtractor?: (obj: any, key: string) => any): boolean {
         if (expressions) {
             if (expressions instanceof FilteringExpressionsTree) {
                 const expressionsTree = expressions as IFilteringExpressionsTree;
@@ -43,7 +43,7 @@ export abstract class BaseFilteringStrategy implements IFilteringStrategy  {
 
                 if (expressionsTree.filteringOperands && expressionsTree.filteringOperands.length) {
                     for (const operand of expressionsTree.filteringOperands) {
-                        matchOperand = this.matchRecord(rec, operand, grid);
+                        matchOperand = this.matchRecord(rec, operand, valueExtractor);
 
                         // Return false if at least one operand does not match and the filtering logic is And
                         if (!matchOperand && operator === FilteringLogic.And) {
@@ -62,10 +62,9 @@ export abstract class BaseFilteringStrategy implements IFilteringStrategy  {
                 return true;
             } else {
                 const expression = expressions as IFilteringExpression;
-                const column = grid && grid.getColumnByName(expression.fieldName);
-                const isDate = column ? column.dataType === DateType || column.dataType === DateTimeType : false;
-                const isTime = column ? column.dataType === TimeType : false;
-                return this.findMatchByExpression(rec, expression, isDate, isTime, grid);
+                const isDate = expression.dataType === DateType;
+                const isTime = expression.dataType === TimeType;
+                return this.findMatchByExpression(rec, expression, isDate, isTime, valueExtractor);
             }
         }
 
@@ -73,9 +72,9 @@ export abstract class BaseFilteringStrategy implements IFilteringStrategy  {
     }
 
     public abstract filter(data: any[], expressionsTree: IFilteringExpressionsTree,
-        advancedExpressionsTree?: IFilteringExpressionsTree, grid?: GridType): any[];
+        advancedExpressionsTree?: IFilteringExpressionsTree, valueExtractor?: (obj: any, key: string) => any): any[];
 
-    protected abstract getFieldValue(rec: any, fieldName: string, isDate?: boolean, isTime?: boolean, grid?: GridType): any;
+    protected abstract getFieldValue(rec: any, fieldName: string, isDate?: boolean, isTime?: boolean): any;
 }
 
 export class FilteringStrategy extends BaseFilteringStrategy {
@@ -89,8 +88,7 @@ export class FilteringStrategy extends BaseFilteringStrategy {
         return this._instace || (this._instace = new this());
     }
 
-    public filter<T>(data: T[], expressionsTree: IFilteringExpressionsTree, advancedExpressionsTree: IFilteringExpressionsTree,
-        grid: GridType): T[] {
+    public filter<T>(data: T[], expressionsTree: IFilteringExpressionsTree, advancedExpressionsTree: IFilteringExpressionsTree, valueExtractor?: (obj: any, key: string) => any): T[] {
         let i;
         let rec;
         const len = data.length;
@@ -101,7 +99,7 @@ export class FilteringStrategy extends BaseFilteringStrategy {
         }
         for (i = 0; i < len; i++) {
             rec = data[i];
-            if (this.matchRecord(rec, expressionsTree, grid) && this.matchRecord(rec, advancedExpressionsTree, grid)) {
+            if (this.matchRecord(rec, expressionsTree, valueExtractor) && this.matchRecord(rec, advancedExpressionsTree, valueExtractor)) {
                 res.push(rec);
             }
         }

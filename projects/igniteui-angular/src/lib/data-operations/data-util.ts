@@ -116,11 +116,11 @@ export class DataUtil {
         return data.slice(index * recordsPerPage, (index + 1) * recordsPerPage);
     }
 
-    public static filter<T>(data: T[], state: IFilteringState, grid?: GridType): T[] {
+    public static filter<T>(data: T[], state: IFilteringState, valueExtractor?: (obj: any, key: string) => any): T[] {
         if (!state.strategy) {
             state.strategy = new FilteringStrategy();
         }
-        return state.strategy.filter(data, state.expressionsTree, state.advancedExpressionsTree, grid);
+        return state.strategy.filter(data, state.expressionsTree, state.advancedExpressionsTree, valueExtractor);
     }
 
     public static correctPagingState(state: IPagingState, length: number) {

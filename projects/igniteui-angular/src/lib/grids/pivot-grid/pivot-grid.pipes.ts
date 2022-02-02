@@ -5,7 +5,7 @@ import { FilteringExpressionsTree, IFilteringExpressionsTree } from '../../data-
 import { IFilteringStrategy } from '../../data-operations/filtering-strategy';
 import { DEFAULT_PIVOT_KEYS, IPivotConfiguration, IPivotDimension, IPivotKeys, PivotDimensionType } from './pivot-grid.interface';
 import {
-    DimensionValuesFilteringStrategy, PivotColumnDimensionsStrategy,
+    PivotColumnDimensionsStrategy,
     PivotRowDimensionsStrategy
 } from '../../data-operations/pivot-strategy';
 import { PivotUtil } from './pivot-util';
@@ -186,7 +186,7 @@ export class IgxPivotColumnPipe implements PipeTransform {
     pure: true
 })
 export class IgxPivotGridFilterPipe implements PipeTransform {
-    constructor(private gridAPI: GridBaseAPIService<IgxGridBaseDirective & GridType>) { }
+    constructor(private gridAPI: GridBaseAPIService<IgxPivotGridComponent & GridType>) { }
     public transform(collection: any[],
         config: IPivotConfiguration,
         filterStrategy: IFilteringStrategy,
@@ -194,10 +194,10 @@ export class IgxPivotGridFilterPipe implements PipeTransform {
         _filterPipeTrigger: number,
         _pipeTrigger: number): any[] {
         const expressionsTree = PivotUtil.buildExpressionTree(config);
-
+        const grid = this.gridAPI.grid;
         const state = {
             expressionsTree,
-            strategy: filterStrategy || new DimensionValuesFilteringStrategy(),
+            strategy: filterStrategy,
             advancedExpressionsTree
         };
 
@@ -205,7 +205,7 @@ export class IgxPivotGridFilterPipe implements PipeTransform {
             return collection;
         }
 
-        const result = DataUtil.filter(cloneArray(collection, true), state, this.gridAPI.grid);
+        const result = DataUtil.filter(cloneArray(collection, true), state, this.gridAPI.grid.getFieldValue.bind(this.gridAPI.grid));
 
         return result;
     }
@@ -250,6 +250,7 @@ export class IgxPivotGridSortingPipe implements PipeTransform {
     public transform(collection: any[], config: IPivotConfiguration, sorting: IGridSortingStrategy,
         id: string, pipeTrigger: number, pinned?): any[] {
         let result: any[];
+        const grid = this.gridAPI.grid;
         const allDimensions = config.rows;
         const enabledDimensions = allDimensions.filter(x => x && x.enabled);
         const expressions: ISortingExpression[] = [];
@@ -269,30 +270,9 @@ export class IgxPivotGridSortingPipe implements PipeTransform {
         if (!expressions.length) {
             result = collection;
         } else {
-            result = DataUtil.sort(cloneArray(collection, true), expressions, sorting, this.getFieldValue.bind(this));
+            result = DataUtil.sort(cloneArray(collection, true), expressions, sorting, this.gridAPI.grid.getFieldValue.bind(this.gridAPI.grid));
         }
 
         return result;
-    }
-    /**
-     * Value extractor for the pivot grid.
-     * @param obj The record object.
-     * @param key The field key.
-     */
-
-    protected getFieldValue(obj: any, key: string): any {
-        const config = this.gridAPI.grid.pivotConfiguration;
-        const allDimensions = config.rows.concat(config.columns).concat(config.filters).filter(x => x !== null && x !== undefined);
-        const enabledDimensions = allDimensions.filter(x => x && x.enabled);
-        const dimension = PivotUtil.flatten(enabledDimensions).find(x => x.memberName === key);
-        let resolvedValue = PivotUtil.extractValueFromDimension(dimension, obj);
-        const formatAsDate = dimension.dataType === GridColumnDataType.Date || dimension.dataType === GridColumnDataType.DateTime;
-        if (formatAsDate) {
-            const date = parseDate(resolvedValue);
-            resolvedValue = date ?
-                new Date().setHours(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()) : date;
-
-        }
-        return resolvedValue;
     }
 }

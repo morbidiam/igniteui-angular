@@ -232,7 +232,7 @@ export class IgxTreeGridAPIService extends GridBaseAPIService<GridType> {
                 expressionsTree,
                 strategy: this.grid.filterStrategy ?? new TreeGridFilteringStrategy()
             };
-            records = DataUtil.filter(cloneArray(records), state, this.grid);
+            records = DataUtil.filter(cloneArray(records), state);
         }
 
         const data = [];

@@ -119,7 +119,7 @@ export class GridFormattingComponent implements OnInit, AfterViewInit {
         done: (colVals: any[]) => void) {
         setTimeout(() => {
             let columnValues = [];
-            const filtered = CustomFilteringStrategy.instance().filter(column.grid.data, columnExprTree, null, column.grid);
+            const filtered = CustomFilteringStrategy.instance().filter(column.grid.data, columnExprTree, null);
             columnValues = filtered.map(record => record[column.field]);
             done(columnValues);
             return;
@@ -150,8 +150,8 @@ class EarliestSummary extends IgxDateSummaryOperand {
 }
 
 class CustomFilteringStrategy extends FilteringStrategy {
-    public filter(dataa, expressionsTree: IFilteringExpressionsTree, advancedExpressionsTree: IFilteringExpressionsTree, grid): any[] {
-        const res = super.filter(dataa, expressionsTree, advancedExpressionsTree, grid);
+    public filter(data, expressionsTree: IFilteringExpressionsTree, advancedExpressionsTree: IFilteringExpressionsTree): any[] {
+        const res = super.filter(data, expressionsTree, advancedExpressionsTree);
         return res;
     }
 }

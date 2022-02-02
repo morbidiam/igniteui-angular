@@ -169,24 +169,3 @@ export class PivotColumnDimensionsStrategy implements IPivotDimensionStrategy {
         return !(record[pivotKeys.records] && record[pivotKeys.records].some(r => r[pivotKeys.records]));
     }
 }
-
-export class DimensionValuesFilteringStrategy extends FilteringStrategy {
-    /**
-     * Creates a new instance of FormattedValuesFilteringStrategy.
-     *
-     * @param fields An array of column field names that should be formatted.
-     * If omitted the values of all columns which has formatter will be formatted.
-     */
-    constructor(private fields?: string[]) {
-        super();
-    }
-
-    protected getFieldValue(rec: any, fieldName: string, isDate: boolean = false, isTime: boolean = false,
-        grid?: PivotGridType): any {
-        const config = grid.pivotConfiguration;
-        const allDimensions = config.rows.concat(config.columns).concat(config.filters).filter(x => x !== null && x !== undefined);
-        const enabledDimensions = allDimensions.filter(x => x && x.enabled);
-        const dim = PivotUtil.flatten(enabledDimensions).find(x => x.memberName === fieldName);
-        return PivotUtil.extractValueFromDimension(dim, rec);
-    }
-}

@@ -123,7 +123,7 @@ export class IgxGridFilteringPipe implements PipeTransform {
             return collection;
         }
 
-        const result = DataUtil.filter(cloneArray(collection), state, this.grid);
+        const result = DataUtil.filter(cloneArray(collection), state);
         this.grid.setFilteredData(result, pinned);
         return result;
     }

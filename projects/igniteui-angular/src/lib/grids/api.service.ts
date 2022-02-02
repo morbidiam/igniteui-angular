@@ -466,7 +466,7 @@ export class GridBaseAPIService<T extends GridType> implements GridServiceType {
 
         if (expressionsTree.filteringOperands.length) {
             const state = { expressionsTree, strategy: this.grid.filterStrategy };
-            data = DataUtil.filter(cloneArray(data), state, this.grid);
+            data = DataUtil.filter(cloneArray(data), state);
         }
 
         return data;

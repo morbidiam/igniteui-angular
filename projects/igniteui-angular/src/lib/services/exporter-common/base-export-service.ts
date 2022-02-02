@@ -520,7 +520,7 @@ export abstract class IgxBaseExporter {
                     strategy: grid.filterStrategy
                 };
 
-                data = DataUtil.filter(data, filteringState, grid);
+                data = DataUtil.filter(data, filteringState);
             }
 
             if (hasSorting && !this.options.ignoreSorting) {
@@ -594,7 +594,7 @@ export abstract class IgxBaseExporter {
                         strategy: islandGrid.filterStrategy
                     };
 
-                    data = DataUtil.filter(data, filteringState, islandGrid);
+                    data = DataUtil.filter(data, filteringState);
                 }
 
                 if (hasSorting && !this.options.ignoreSorting) {
@@ -624,7 +624,7 @@ export abstract class IgxBaseExporter {
                         strategy: island.filterStrategy
                     };
 
-                    data = DataUtil.filter(data, filteringState, island);
+                    data = DataUtil.filter(data, filteringState);
                 }
 
                 if (hasSorting && !this.options.ignoreSorting) {
@@ -721,7 +721,7 @@ export abstract class IgxBaseExporter {
                     strategy: grid.filterStrategy
                 };
 
-                gridData = DataUtil.filter(gridData, filteringState, grid);
+                gridData = DataUtil.filter(gridData, filteringState);
             }
 
             if (hasSorting && !this.options.ignoreSorting) {

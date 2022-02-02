@@ -165,7 +165,7 @@ export class IgxSorting implements IGridSortingStrategy {
             gbData = this.groupedRecordsByExpression(data, i, expr, isDate, isString);
             gbDataLen = gbData.length;
             if (gbDataLen > 1) {
-                gbData = this.sortDataRecursive(gbData, expressions, expressionIndex + 1);
+                gbData = this.sortDataRecursive(gbData, expressions, expressionIndex + 1, valueExtractor);
             }
             for (j = 0; j < gbDataLen; j++) {
                 data[i + j] = gbData[j];

@@ -7,8 +7,8 @@ import { ITreeGridRecord } from './tree-grid.interfaces';
 
 export class TreeGridFilteringStrategy extends BaseFilteringStrategy {
     public filter(data: ITreeGridRecord[], expressionsTree: IFilteringExpressionsTree,
-        advancedExpressionsTree?: IFilteringExpressionsTree, grid?: GridType): ITreeGridRecord[] {
-        return this.filterImpl(data, expressionsTree, advancedExpressionsTree, undefined, grid);
+        advancedExpressionsTree?: IFilteringExpressionsTree, valueExtractor?: (obj: any, key: string, isDate?: boolean) => any): ITreeGridRecord[] {
+        return this.filterImpl(data, expressionsTree, advancedExpressionsTree, undefined, valueExtractor);
     }
 
     protected getFieldValue(rec: any, fieldName: string, isDate: boolean = false): any {
@@ -19,7 +19,7 @@ export class TreeGridFilteringStrategy extends BaseFilteringStrategy {
     }
 
     private filterImpl(data: ITreeGridRecord[], expressionsTree: IFilteringExpressionsTree,
-        advancedExpressionsTree: IFilteringExpressionsTree, parent: ITreeGridRecord, grid?: GridType): ITreeGridRecord[] {
+        advancedExpressionsTree: IFilteringExpressionsTree, parent: ITreeGridRecord, valueExtractor?: (obj: any, key: string, isDate?: boolean) => any): ITreeGridRecord[] {
         let i: number;
         let rec: ITreeGridRecord;
         const len = data.length;
@@ -31,11 +31,11 @@ export class TreeGridFilteringStrategy extends BaseFilteringStrategy {
             rec = DataUtil.cloneTreeGridRecord(data[i]);
             rec.parent = parent;
             if (rec.children) {
-                const filteredChildren = this.filterImpl(rec.children, expressionsTree, advancedExpressionsTree, rec, grid);
+                const filteredChildren = this.filterImpl(rec.children, expressionsTree, advancedExpressionsTree, rec, valueExtractor);
                 rec.children = filteredChildren.length > 0 ? filteredChildren : null;
             }
 
-            if (this.matchRecord(rec, expressionsTree, grid) && this.matchRecord(rec, advancedExpressionsTree, grid)) {
+            if (this.matchRecord(rec, expressionsTree) && this.matchRecord(rec, advancedExpressionsTree)) {
                 res.push(rec);
             } else if (rec.children && rec.children.length > 0) {
                 rec.isFilteredOutParent = true;
@@ -77,12 +77,12 @@ export class TreeGridFormattedValuesFilteringStrategy extends TreeGridFilteringS
 
 export class TreeGridMatchingRecordsOnlyFilteringStrategy extends TreeGridFilteringStrategy {
     public filter(data: ITreeGridRecord[], expressionsTree: IFilteringExpressionsTree,
-        advancedExpressionsTree?: IFilteringExpressionsTree, grid?: GridType): ITreeGridRecord[] {
-        return this.filterImplementation(data, expressionsTree, advancedExpressionsTree, undefined, grid);
+        advancedExpressionsTree?: IFilteringExpressionsTree, valueExtractor?: (obj: any, key: string, isDate?: boolean) => any): ITreeGridRecord[] {
+        return this.filterImplementation(data, expressionsTree, advancedExpressionsTree, undefined, valueExtractor);
     }
 
     private filterImplementation(data: ITreeGridRecord[], expressionsTree: IFilteringExpressionsTree,
-        advancedExpressionsTree: IFilteringExpressionsTree, parent: ITreeGridRecord, grid?: GridType): ITreeGridRecord[] {
+        advancedExpressionsTree: IFilteringExpressionsTree, parent: ITreeGridRecord, valueExtractor?: (obj: any, key: string, isDate?: boolean) => any): ITreeGridRecord[] {
         let i: number;
         let rec: ITreeGridRecord;
         const len = data.length;
@@ -94,10 +94,10 @@ export class TreeGridMatchingRecordsOnlyFilteringStrategy extends TreeGridFilter
             rec = DataUtil.cloneTreeGridRecord(data[i]);
             rec.parent = parent;
             if (rec.children) {
-                const filteredChildren = this.filterImplementation(rec.children, expressionsTree, advancedExpressionsTree, rec, grid);
+                const filteredChildren = this.filterImplementation(rec.children, expressionsTree, advancedExpressionsTree, rec, valueExtractor);
                 rec.children = filteredChildren.length > 0 ? filteredChildren : null;
             }
-            if (this.matchRecord(rec, expressionsTree, grid) && this.matchRecord(rec, advancedExpressionsTree, grid)) {
+            if (this.matchRecord(rec, expressionsTree) && this.matchRecord(rec, advancedExpressionsTree)) {
                 res.push(rec);
             } else if (rec.children && rec.children.length > 0) {
                 rec = this.setCorrectLevelToFilteredRecords(rec);
