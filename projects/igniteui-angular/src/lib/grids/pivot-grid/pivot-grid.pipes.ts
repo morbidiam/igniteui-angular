@@ -274,8 +274,13 @@ export class IgxPivotGridSortingPipe implements PipeTransform {
 
         return result;
     }
+    /**
+     * Value extractor for the pivot grid.
+     * @param obj The record object.
+     * @param key The field key.
+     */
 
-    protected getFieldValue(obj: any, key: string, isDate: boolean = false, isTime: boolean = false): any {
+    protected getFieldValue(obj: any, key: string): any {
         const config = this.gridAPI.grid.pivotConfiguration;
         const allDimensions = config.rows.concat(config.columns).concat(config.filters).filter(x => x !== null && x !== undefined);
         const enabledDimensions = allDimensions.filter(x => x && x.enabled);
@@ -284,7 +289,7 @@ export class IgxPivotGridSortingPipe implements PipeTransform {
         const formatAsDate = dimension.dataType === GridColumnDataType.Date || dimension.dataType === GridColumnDataType.DateTime;
         if (formatAsDate) {
             const date = parseDate(resolvedValue);
-            resolvedValue = isTime && date ?
+            resolvedValue = date ?
                 new Date().setHours(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()) : date;
 
         }
