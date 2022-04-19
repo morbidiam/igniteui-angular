@@ -526,6 +526,11 @@ export class AppComponent implements OnInit {
             name: 'TreeGrid Add Row'
         },
         {
+            link: '/treeGridSorting',
+            icon: 'view_column',
+            name: 'TreeGrid Sorting'
+        },
+        {
             link: '/dateRange',
             icon: 'date_range',
             name: 'DateRange'

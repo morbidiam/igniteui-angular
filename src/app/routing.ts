@@ -129,6 +129,7 @@ import { PivotGridSampleComponent } from './pivot-grid/pivot-grid.sample';
 import { PivotGridHierarchySampleComponent } from './pivot-grid-hierarchy/pivot-grid-hierarchy.sample';
 import { PivotGridNoopSampleComponent } from './pivot-grid-noop/pivot-grid-noop.sample';
 import { IgxStepperSampleComponent as StepperSampleComponent } from './stepper/stepper.sample';
+import { TreeGridSortingComponent } from './tree-grid-sorting/tree-grid-sorting-sample.component';
 
 const appRoutes = [
     {
@@ -539,6 +540,10 @@ const appRoutes = [
     {
         path: 'treeGridLoadOnDemand',
         component: TreeGridLoadOnDemandSampleComponent
+    },
+    {
+        path: 'treeGridSorting',
+        component: TreeGridSortingComponent
     },
     {
         path: 'tooltip',
