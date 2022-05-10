@@ -10,6 +10,6 @@ export class NavdrawerSampleComponent {
     constructor(public app: AppComponent) {}
 
     public toggle() {
-        this.app.navdrawer.toggle();
+        // this.app.navdrawer.toggle();
     }
 }

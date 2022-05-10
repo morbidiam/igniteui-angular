@@ -99,6 +99,7 @@ import { PivotGridSampleComponent } from './pivot-grid/pivot-grid.sample';
 import { PivotGridHierarchySampleComponent } from './pivot-grid-hierarchy/pivot-grid-hierarchy.sample';
 import { PivotGridNoopSampleComponent } from './pivot-grid-noop/pivot-grid-noop.sample';
 import { IgxStepperSampleComponent } from './stepper/stepper.sample';
+import { DragGhostMobileComponent } from './drag-ghost-mobile/drag-ghost-mobile.sample';
 
 const appRoutes = [
     {
@@ -466,6 +467,10 @@ const appRoutes = [
     {
         path: 'stepper',
         component: IgxStepperSampleComponent
+    },
+    {
+        path: 'drag-ghost-mobile',
+        component: DragGhostMobileComponent
     }
 ];
 

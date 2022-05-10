@@ -24,12 +24,13 @@ export enum Direction {
     LEFT = 3,
     RIGHT = 4
 }
+
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    selector: 'app-drag-ghost-mobile',
+    styleUrls: ['drag-ghost-mobile.sample.scss'],
+    templateUrl: 'drag-ghost-mobile.sample.html'
 })
-export class AppComponent implements OnInit {
+export class DragGhostMobileComponent implements OnInit {
     public docGroupList: docGroup[];
     private dragObj;
     private dummyObj;

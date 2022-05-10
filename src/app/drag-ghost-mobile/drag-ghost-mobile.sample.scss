@@ -1,0 +1,110 @@
+igx-card {
+    position: relative;
+    width: 128px;
+    min-width: 128px;
+    height: 128px;
+    margin: 8px;
+    padding: 8px;
+    cursor: move;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+//  igx-card.drag-ghost {
+// transform: scale(1.05);
+// box-shadow: igx-elevation($elevation: 24);
+// color: igx-color($color: "secondary", $variant: 300);
+// }
+
+igx-card.invisible {
+    visibility: hidden !important;
+}
+
+igx-card[igxCardHeaderTitle] {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+igx-card:last-child {
+    margin-right: unset;
+}
+
+igx-card > img {
+    width: auto;
+    height: auto;
+    max-width: 128px;
+    max-height: 128px;
+}
+igx-card .filename {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+igx-card .close {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    cursor: pointer;
+}
+igx-card .checkbox {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    cursor: pointer;
+}
+
+.parent {
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    user-select: none;
+    padding: rem(16px);
+    overflow: auto;
+}
+.parent article {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+    background-color: #bbb;
+    border-radius: 8px;
+    border: 1px solid #b9b9b9;
+    margin: 12px;
+}
+
+.parent article header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: rem(8px) 0;
+    align-self: flex-start;
+}
+// .state-title {
+// @include igx-type-style($material-type-scale, "subtitle-1") {
+//     font-weight: 600;
+//     margin: 0;
+// }
+// }
+
+.state-number {
+    font-size: rem(12px);
+    font-weight: bold;
+    padding: 4px;
+}
+
+.parent article header.active {
+    background-color: #ffcc00;
+}
+
+.parent article header section {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 16px;
+    overflow-x: auto;
+}
