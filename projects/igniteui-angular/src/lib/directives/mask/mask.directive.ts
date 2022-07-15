@@ -209,9 +209,14 @@ export class IgxMaskDirective implements OnInit, AfterViewChecked, ControlValueA
             return;
         }
 
+        // TODO: do we still need the code in this if. I do not see how we can hit this code. Also this code does
+        //       not handle deleteContentForward event type
         // After the compositionend event Chromium triggers input events of type 'deleteContentBackward' and
         // we need to adjust the start and end indexes to include mask literals
-        if (event.inputType === 'deleteContentBackward' && this._key !== this.platform.KEYMAP.BACKSPACE) {
+        // #11852 - in Chromium based browsers clicking on delete button when more than one character is selected
+        //          fires event with inputType equal to deleteContentBackward
+        if (event.inputType === 'deleteContentBackward' &&
+            (this._key !== this.platform.KEYMAP.BACKSPACE && this._key !== this.platform.KEYMAP.DELETE)) {
                 const isInputComplete = this._compositionStartIndex === 0 && this._end === this.mask.length;
                 let numberOfMaskLiterals = 0;
                 const literalPos = this.maskParser.getMaskLiterals(this.maskOptions.format).keys();
@@ -392,6 +397,9 @@ export class IgxMaskDirective implements OnInit, AfterViewChecked, ControlValueA
         this.inputValue = replacedData.value;
         if (this._key === this.platform.KEYMAP.BACKSPACE) {
             replacedData.end = this._start;
+        };
+        if (this._key === this.platform.KEYMAP.DELETE) {
+            replacedData.end = this._end;
         };
 
         this.setSelectionRange(replacedData.end);
