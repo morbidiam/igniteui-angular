@@ -142,7 +142,7 @@
 
 <div class="igx-grid__footer" #footer>
     <ng-content select="igx-grid-footer,igc-grid-footer"></ng-content>
-    <ng-content *ngIf="totalRecords || pagingMode === 1"  select="igx-paginator,igc-paginator"></ng-content>
+    <ng-content select="igx-paginator,igc-paginator"></ng-content>
     <ng-container #paginatorOutlet></ng-container>
 </div>
 
@@ -203,7 +203,7 @@
     <div class="igx-banner__message">
         <span class="igx-banner__text">
             <ng-container
-                *ngTemplateOutlet="this.crudService.row?.getClassName() === 'IgxAddRow' ? rowAddText : resolveRowEditText || defaultRowEditText;
+                *ngTemplateOutlet="this.crudService.row?.getClassName() === 'IgxAddRow' ? rowAddTextTemplate : resolveRowEditText || defaultRowEditText;
                 context: { $implicit: this.crudService.row?.getClassName() !== 'IgxAddRow' ? rowChangesCount : null }">
             </ng-container>
         </span>
