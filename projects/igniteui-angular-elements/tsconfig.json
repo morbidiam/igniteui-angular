@@ -3,8 +3,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "module": "ES2022",
-    "target": "ES2022",
+    "module": "es2020",
+    "target": "es2020",
     "types": [
       "hammerjs"
     ],
