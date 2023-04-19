@@ -89,6 +89,10 @@ export class GridExportComponent {
 
     public toggleSummary(column: ColumnType) {
         column.hasSummary = !column.hasSummary;
+
+        if (!column.hasSummary) {
+            this.grid.summaryService.removeSummaries(this.grid.summaryService.rootSummaryID, column.field);
+        }
     }
 
     public configureExport(args: IGridToolbarExportEventArgs) {
