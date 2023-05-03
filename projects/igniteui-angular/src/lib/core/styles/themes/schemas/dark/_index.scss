@@ -198,6 +198,10 @@ $dark-schema: (
     igx-tooltip: $dark-tooltip,
     igx-tree: $dark-tree,
     igx-watermark: $dark-watermark,
+    _meta: (
+        variant: 'dark',
+        theme: 'material',
+    )
 );
 
 /// An alias of $dark-schema.

@@ -198,6 +198,10 @@ $light-schema: (
     igx-tooltip: $light-tooltip,
     igx-tree: $light-tree,
     igx-watermark: $light-watermark,
+    _meta: (
+        variant: 'light',
+        theme: 'material',
+    )
 );
 
 /// An alias of $light-schema.
