@@ -49,7 +49,8 @@
     }
 
     @return extend($theme, (
-        name: $name,
+        name: 'ig-avatar',
+        selector: $name,
         background: $background,
         color: $color,
         border-radius: $border-radius,
@@ -122,14 +123,14 @@
     }
 
     %igx-avatar--circle {
-        --igx-avatar-border-radius: #{rem(44px)};
+        --border-radius: #{rem(44px)};
     }
 
     %igx-avatar--rounded {
-        --igx-avatar-border-radius: #{rem(8px)};
+        --border-radius: #{rem(8px)};
 
         @if $variant == 'bootstrap' {
-            --igx-avatar-border-radius: #{rem(4px)};
+            --border-radius: #{rem(4px)};
         }
     }
 
