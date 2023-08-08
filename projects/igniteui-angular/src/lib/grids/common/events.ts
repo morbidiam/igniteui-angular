@@ -103,8 +103,7 @@ export interface ISearchInfo {
     caseSensitive: boolean;
     exactMatch: boolean;
     activeMatchIndex: number;
-    matchCount: number;
-    content: string;
+    matchInfoCache: any[];
 }
 
 export interface IGridToolbarExportEventArgs extends IBaseEventArgs {

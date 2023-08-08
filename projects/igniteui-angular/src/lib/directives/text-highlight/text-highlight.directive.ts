@@ -13,7 +13,14 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { compareMaps } from '../../core/utils';
-import { ISearchInfo } from '../../grids/common/events';
+
+interface ISearchInfo {
+    searchedText: string;
+    content: string;
+    matchCount: number;
+    caseSensitive: boolean;
+    exactMatch: boolean;
+}
 
 /**
  * An interface describing information for the active highlight.
@@ -267,12 +274,11 @@ export class IgxTextHighlightDirective implements AfterViewInit, AfterViewChecke
         }
 
         this._lastSearchInfo = {
-            searchText: '',
+            searchedText: '',
             content: this.value,
             matchCount: 0,
             caseSensitive: false,
-            exactMatch: false,
-            activeMatchIndex: 0
+            exactMatch: false
         };
 
         this._container = this.parentElement.firstElementChild;
@@ -283,7 +289,7 @@ export class IgxTextHighlightDirective implements AfterViewInit, AfterViewChecke
      */
     public ngAfterViewChecked() {
         if (this._valueChanged) {
-            this.highlight(this._lastSearchInfo.searchText, this._lastSearchInfo.caseSensitive, this._lastSearchInfo.exactMatch);
+            this.highlight(this._lastSearchInfo.searchedText, this._lastSearchInfo.caseSensitive, this._lastSearchInfo.exactMatch);
             this.activateIfNecessary();
             this._valueChanged = false;
         }
@@ -298,7 +304,7 @@ export class IgxTextHighlightDirective implements AfterViewInit, AfterViewChecke
         const exactMatchResolved = exactMatch ? true : false;
 
         if (this.searchNeedsEvaluation(text, caseSensitiveResolved, exactMatchResolved)) {
-            this._lastSearchInfo.searchText = text;
+            this._lastSearchInfo.searchedText = text;
             this._lastSearchInfo.caseSensitive = caseSensitiveResolved;
             this._lastSearchInfo.exactMatch = exactMatchResolved;
             this._lastSearchInfo.content = this.value;
@@ -310,7 +316,7 @@ export class IgxTextHighlightDirective implements AfterViewInit, AfterViewChecke
                 this._lastSearchInfo.matchCount = this.getHighlightedText(text, caseSensitive, exactMatch);
             }
         } else if (this._nodeWasRemoved) {
-            this._lastSearchInfo.searchText = text;
+            this._lastSearchInfo.searchedText = text;
             this._lastSearchInfo.caseSensitive = caseSensitiveResolved;
             this._lastSearchInfo.exactMatch = exactMatchResolved;
         }
@@ -324,7 +330,7 @@ export class IgxTextHighlightDirective implements AfterViewInit, AfterViewChecke
     public clearHighlight(): void {
         this.clearChildElements(false);
 
-        this._lastSearchInfo.searchText = '';
+        this._lastSearchInfo.searchedText = '';
         this._lastSearchInfo.matchCount = 0;
     }
 
@@ -362,7 +368,7 @@ export class IgxTextHighlightDirective implements AfterViewInit, AfterViewChecke
                             this._nodeWasRemoved = false;
 
                             this._forceEvaluation = true;
-                            this.highlight(this._lastSearchInfo.searchText,
+                            this.highlight(this._lastSearchInfo.searchedText,
                                 this._lastSearchInfo.caseSensitive,
                                 this._lastSearchInfo.exactMatch);
                             this._forceEvaluation = false;
@@ -486,7 +492,7 @@ export class IgxTextHighlightDirective implements AfterViewInit, AfterViewChecke
     }
 
     private searchNeedsEvaluation(text: string, caseSensitive: boolean, exactMatch: boolean): boolean {
-        const searchedText = this._lastSearchInfo.searchText;
+        const searchedText = this._lastSearchInfo.searchedText;
 
         return !this._nodeWasRemoved &&
             (searchedText === null ||
