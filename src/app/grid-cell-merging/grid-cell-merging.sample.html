@@ -1,0 +1,15 @@
+<div class="sample">
+    <div class="sample-content">
+        <div class="sample-column">
+            <igx-grid #grid [data]="data" [displayDensity]="'cosy'">
+                <igx-column *ngFor="let c of columns" [field]="c.field" [header]="c.field" [groupable]="c.groupable"
+                    width="auto" [sortable]="true" [hidden]="c.hidden" [minWidth]="'150px'" [maxWidth]="'400px'"
+                    [dataType]="c.type" [mergeCells]="mergeType">
+                </igx-column>
+            </igx-grid>
+        </div>
+    </div>
+    <div class="sample-buttons">
+        <igx-switch [checked]="false" (change)="changeMergingType($event)">Visual vs. Physical Merging</igx-switch>
+    </div>
+</div>

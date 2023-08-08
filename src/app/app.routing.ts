@@ -136,6 +136,7 @@ import { QueryBuilderComponent } from './query-builder/query-builder.sample';
 import { PivotGridStateSampleComponent } from './pivot-grid-state/pivot-grid-state.sample';
 import { GridValidationSampleComponent } from './grid-validation/grid-validation.sample.component';
 import { GridExportComponent } from './grid-export/grid-export.sample';
+import { GridCellMergingComponent } from './grid-cell-merging/grid-cell-merging.sample';
 
 const appRoutes: Routes = [
     {
@@ -543,7 +544,12 @@ const appRoutes: Routes = [
     {
         path: 'gridFinJS',
         component: MainComponent
-    }, {
+    },
+    {
+        path: 'gridCellMerging',
+        component: GridCellMergingComponent
+    },
+    {
         path: 'tree',
         component: TreeSampleComponent
     },

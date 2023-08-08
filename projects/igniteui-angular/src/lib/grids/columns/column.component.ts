@@ -55,6 +55,7 @@ import { IColumnVisibilityChangingEventArgs, IPinColumnCancellableEventArgs, IPi
 import { isConstructor, PlatformUtil } from '../../core/utils';
 import { IgxGridCell } from '../grid-public-cell';
 import { NG_VALIDATORS, Validator } from '@angular/forms';
+import { CellMergingType } from '../public_api';
 
 const DEFAULT_DATE_FORMAT = 'mediumDate';
 const DEFAULT_TIME_FORMAT = 'mediumTime';
@@ -147,6 +148,11 @@ export class IgxColumnComponent implements AfterContentInit, OnDestroy, ColumnTy
     @WatchColumnChanges()
     @Input()
     public sortable = false;
+
+    @notifyChanges(true)
+    @WatchColumnChanges()
+    @Input()
+    public mergeCells: CellMergingType = CellMergingType.None; 
     /**
      * Returns if the column is selectable.
      * ```typescript

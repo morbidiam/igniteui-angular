@@ -156,6 +156,7 @@ import { QueryBuilderComponent } from './query-builder/query-builder.sample';
 import { PivotGridStateSampleComponent } from './pivot-grid-state/pivot-grid-state.sample';
 import { ForbiddenValidatorDirective, GridValidationSampleComponent } from './grid-validation/grid-validation.sample.component';
 import { GridExportComponent } from './grid-export/grid-export.sample';
+import { GridCellMergingComponent } from './grid-cell-merging/grid-cell-merging.sample';
 
 const components = [
     AccordionSampleComponent,
@@ -246,6 +247,7 @@ const components = [
     GridMRLSampleComponent,
     GridMRLConfigSampleComponent,
     GridMRLCustomNavigationSampleComponent,
+    GridCellMergingComponent,
     GridCellStylingSampleComponent,
     GridRowEditSampleComponent,
     GridValidationSampleComponent,

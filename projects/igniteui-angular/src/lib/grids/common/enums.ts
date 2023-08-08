@@ -62,3 +62,14 @@ export enum GridInstanceType {
     Grid,
     TreeGrid
 }
+/**
+ * Describes the types of cell merging that the grid supports
+ * 'None' - no cell merging is done
+ * 'Visual' - cells are merged visually by applying CSS styles
+ * 'Physical' - only the first cell in a merged group is rendered and spans the size of the group using rowspan
+ */
+export enum CellMergingType {
+    None,
+    Visual,
+    Physical
+}
