@@ -360,7 +360,11 @@
         }
 
         @if $variant == 'material' {
+            &:hover,
+            &:focus-visible,
             &:active {
+                background: var-get($theme, 'item-background');
+
                 @extend %item-overlay;
 
                 &::before {
@@ -368,13 +372,25 @@
                 }
             }
 
+            &:hover,
+            &:focus-visible {
+                &::before {
+                    background: var-get($theme, 'item-hover-background');
+                }
+            }
+
             &:focus-visible {
                 &:hover {
-                    @extend %item-overlay;
+                    background: var-get($theme, 'item-background');
 
                     &::before {
-                        content: '';
                         background: var-get($theme, 'item-focused-hover-background');
+                    }
+                }
+
+                &:active {
+                    &::before {
+                        background: var-get($theme, 'item-focused-background');
                     }
                 }
             }
@@ -597,6 +613,10 @@
 
                 &:active {
                     background: var-get($theme, 'item-selected-hover-background');
+
+                    &::before {
+                        background: var-get($theme, 'item-selected-focus-background');
+                    }
                 }
             }
         }
