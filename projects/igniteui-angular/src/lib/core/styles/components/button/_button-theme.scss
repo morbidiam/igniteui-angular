@@ -707,6 +707,7 @@
         background: var-get($contained-theme, 'background');
         border-color: var-get($contained-theme, 'border-color');
         border-radius: var-get($contained-theme, 'border-radius');
+        box-shadow: var-get($contained-theme, 'resting-shadow');
 
         igx-icon {
             color: var-get($contained-theme, 'icon-color');
@@ -716,6 +717,7 @@
             color: var-get($contained-theme, 'hover-foreground');
             background: var-get($contained-theme, 'hover-background');
             border-color: var-get($contained-theme, 'hover-border-color');
+            box-shadow: var-get($contained-theme, 'hover-shadow');
 
             igx-icon {
                 color: var-get($contained-theme, 'icon-color-hover');
@@ -738,7 +740,7 @@
             }
 
             @if $variant == 'material' {
-                box-shadow: 0 0 0 rem(3px) var-get($contained-theme, 'shadow-color'), $contained-shadow--focus;
+                box-shadow: var-get($contained-theme, 'focus-shadow');
             } @else {
                 box-shadow: $contained-shadow--active;
             }
@@ -753,7 +755,7 @@
                 }
 
                 @if $variant == 'material' {
-                    box-shadow: 0 0 0 rem(3px) var-get($contained-theme, 'shadow-color'), $contained-shadow--focus;
+                    box-shadow: var-get($contained-theme, 'focus-shadow');
                 }
             }
 
@@ -835,6 +837,7 @@
         background: var-get($fab-theme, 'background');
         border-color: var-get($flat-theme, 'border-color');
         border-radius: var-get($fab-theme, 'border-radius');
+        box-shadow: var-get($fab-theme, 'resting-shadow');
 
         igx-icon {
             color: var-get($fab-theme, 'icon-color');
@@ -844,6 +847,7 @@
             color: var-get($fab-theme, 'hover-foreground');
             background: var-get($fab-theme, 'hover-background');
             border-color: var-get($flat-theme, 'hover-border-color');
+            box-shadow: var-get($fab-theme, 'hover-shadow');
 
             igx-icon {
                 color: var-get($fab-theme, 'icon-color-hover');
@@ -866,7 +870,7 @@
             }
 
             @if $variant == 'material' {
-                box-shadow: 0 0 0 rem(3px) var-get($fab-theme, 'shadow-color'), $fab-shadow--focus;
+                box-shadow: var-get($fab-theme, 'focus-shadow');
             } @else {
                 box-shadow: $contained-shadow--focus;
             }
