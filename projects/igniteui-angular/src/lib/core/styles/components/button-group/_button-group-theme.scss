@@ -229,11 +229,9 @@
     $indigo-theme: $variant == 'indigo-design';
 
     %item-overlay {
-        %igx-group-item-content {
-            z-index: 1;
-        }
-
         &::before {
+            content: '';
+            z-index: -1;
             position: absolute;
             pointer-events: none;
             width: 100%;
@@ -363,13 +361,9 @@
             &:hover,
             &:focus-visible,
             &:active {
-                background: var-get($theme, 'item-background');
-
                 @extend %item-overlay;
 
-                &::before {
-                    content: '';
-                }
+                background: var-get($theme, 'item-background');                
             }
 
             &:hover,
@@ -412,10 +406,6 @@
                 @extend %item-overlay;
 
                 box-shadow: none;
-
-                &::before {
-                    content: '';
-                }
 
                 &:focus-visible {
                     box-shadow: 0 0 0 rem(3px) var-get($theme, 'idle-shadow-color');
@@ -596,7 +586,6 @@
                 @extend %item-overlay;
 
                 &::before {
-                    content: '';
                     background: var-get($theme, 'item-selected-focus-hover-background');
                 }
             }
@@ -650,7 +639,6 @@
                 background: var-get($theme, 'item-selected-background');
 
                 &::before {
-                    content: '';
                     background: var-get($theme, 'item-selected-hover-background');
                 }
             }
@@ -667,7 +655,6 @@
                 }
 
                 &::before {
-                    content: '';
                     background: var-get($theme, 'item-selected-focus-background');
                 }
             }
@@ -690,7 +677,6 @@
                 background: var-get($theme, 'item-selected-hover-background');
 
                 &::before {
-                    content: '';
                     background: var-get($theme, 'item-selected-focus-background');
                 }
             }
@@ -714,7 +700,6 @@
                 @extend %item-overlay;
 
                 &::before {
-                    content: '';
                     background: var-get($theme, 'item-selected-hover-background');
                 }
             }
